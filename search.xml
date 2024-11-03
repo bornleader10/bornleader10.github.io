@@ -4,6 +4,81 @@
   
     
     <entry>
+      <title>生活</title>
+      <link href="/2024/11/03/%E7%94%9F%E6%B4%BB/"/>
+      <url>/2024/11/03/%E7%94%9F%E6%B4%BB/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> 生活 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 生活记录 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>科研</title>
+      <link href="/2024/11/03/%E7%A7%91%E7%A0%94/"/>
+      <url>/2024/11/03/%E7%A7%91%E7%A0%94/</url>
+      
+        <content type="html"><![CDATA[<p>科研测试</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 科研 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 科研记录 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++算法</title>
+      <link href="/2024/11/03/C-%E7%AE%97%E6%B3%95/"/>
+      <url>/2024/11/03/C-%E7%AE%97%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<p>我是C++算法</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> C++ </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习记录 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2024/11/02/hello-world/"/>
       <url>/2024/11/02/hello-world/</url>
