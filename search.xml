@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>C++ 音视频方向的计划</title>
+      <link href="/2024/11/05/planA/"/>
+      <url>/2024/11/05/planA/</url>
+      
+        <content type="html"><![CDATA[<h1 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h1><p><strong>C++语法</strong>：《C++ Primer》  11月份就得结束，坚持一天一章的原则</p><p><strong>操作系统</strong>：《鸟哥的Linux私房菜》大概两天一章的速度</p><p><strong>网络</strong>：《TCP IP网络编程》两天一章即可</p><p><strong>算法</strong>：日常练习，把基础班和蓝桥杯看完即可</p><p>—————————–以上是第一阶段的任务，要在2024年12月31日之前完成———————————</p><h1 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h1><p><strong>设计模式</strong>（现在还不知道是什么东西）</p><p><strong>FFmpeg</strong>（5-6周）</p><p><strong>WebRTC</strong>（5-6周）</p><p><strong>调试和测试</strong></p><p><strong>看项目和博客</strong></p><p><strong>其他知识</strong>：设计文档、攻城架构、代码管理、QT</p><p>—————————–以上是第一阶段的任务，要在2025年3月15日之前完成———————————</p><p>暂时就这些，后续根据实际情况再作调整。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计划书 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习计划 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Cpp_unit06</title>
       <link href="/2024/11/04/Cpp-unit06/"/>
       <url>/2024/11/04/Cpp-unit06/</url>
@@ -71,31 +96,6 @@
         <tags>
             
             <tag> 科研记录 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>算法</title>
-      <link href="/2024/11/03/%E7%AE%97%E6%B3%95/"/>
-      <url>/2024/11/03/%E7%AE%97%E6%B3%95/</url>
-      
-        <content type="html"><![CDATA[<p>我是C++算法</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 编程 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 学习记录 </tag>
             
         </tags>
       
