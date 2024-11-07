@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>指针</title>
+      <link href="/2024/11/06/%E6%8C%87%E9%92%88/"/>
+      <url>/2024/11/06/%E6%8C%87%E9%92%88/</url>
+      
+        <content type="html"><![CDATA[<p>  <strong>常量指针</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> * p = &amp;a;    <span class="comment">// 特点，指针的指向可以修改，但是指针指向的值不可以修改</span></span><br><span class="line"><span class="comment">//*p = 20; </span></span><br><span class="line">p = &amp;b;</span><br></pre></td></tr></table></figure><p><strong>指针常量</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *<span class="type">const</span> p = &amp;a;  <span class="comment">//特点：指针的指向不可以改，指针指向的值可以改</span></span><br><span class="line">*p = <span class="number">20</span>;  </span><br><span class="line"><span class="comment">//p = &amp;b;</span></span><br></pre></td></tr></table></figure><p><strong>const既修饰指针，又修饰常量</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> * <span class="type">const</span> p = &amp;a; <span class="comment">//特点：指针的指向和指针指向的值都不可以修改 </span></span><br><span class="line"><span class="comment">//*p = 20;</span></span><br><span class="line"><span class="comment">//p = &amp;b;</span></span><br></pre></td></tr></table></figure><p>如何判断什么操作不能做，要看const修饰的是什么</p><p><strong>指针和数组</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 编程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习记录 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>《TCP/IP网络编程》第一章</title>
+      <link href="/2024/11/05/%E3%80%8ATCP-IP%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0/"/>
+      <url>/2024/11/05/%E3%80%8ATCP-IP%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0/</url>
+      
+        <content type="html"><![CDATA[<p><strong>套接字</strong></p><p>是网络数据传输用的软件设备，网络编程又称为套接字编程</p><p>套接字两种方式：</p><ol><li>调用socket函数（安装电话机）时进行的对话</li></ol><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">socket</span><span class="params">(<span class="type">int</span> domain, <span class="type">int</span> type, <span class="type">int</span> protocol)</span></span>;</span><br></pre></td></tr></table></figure><p>是由套接字函数生成套接字</p><ol start="2"><li>调用bind函数（分配电话号码）时进行的对话</li></ol><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">bind</span><span class="params">(<span class="type">int</span> sockfd, <span class="keyword">struct</span> sockaddr *muaddr, <span class="type">socklen_t</span> addrlen)</span></span>;</span><br><span class="line">  --&gt; 成功时返回<span class="number">0</span>， 失败时返回 <span class="number">-1.</span></span><br></pre></td></tr></table></figure><ol start="3"><li><p>调用listen函数（连接电话线）时进行的对话</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">listen</span><span class="params">(<span class="type">int</span> sockfd, <span class="type">int</span> backlog)</span></span>;</span><br></pre></td></tr></table></figure></li><li><p>调用accept函数（拿起话筒）时进行的对话</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys/socket.h&gt;</span><br><span class="line">int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 网络 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习记录 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>C++ 音视频方向的计划</title>
       <link href="/2024/11/05/planA/"/>
       <url>/2024/11/05/planA/</url>
