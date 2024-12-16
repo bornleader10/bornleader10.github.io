@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bornleader10.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="联合体语法 1234567&#x2F;&#x2F;示范union USER&#123;	    short sHP;    int nHP;&#125;;&#x2F;&#x2F; 通过union 可以创建一个联合体，union中的成员变量共享内存，因此union的数据类型大小由其最大的成员变量决定。  实践一下 123456789101112131415161718192021222324252627282930313233343536">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cplusplus02联合体和字符串">
+<meta property="og:url" content="https://bornleader10.github.io/2024/12/11/Cplusplus02%E8%81%94%E5%90%88%E4%BD%93%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2/index.html">
+<meta property="og:site_name" content="暮色回想">
+<meta property="og:description" content="联合体语法 1234567&#x2F;&#x2F;示范union USER&#123;	    short sHP;    int nHP;&#125;;&#x2F;&#x2F; 通过union 可以创建一个联合体，union中的成员变量共享内存，因此union的数据类型大小由其最大的成员变量决定。  实践一下 123456789101112131415161718192021222324252627282930313233343536">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bu.dusays.com/2024/11/21/673ee8f79c446.png">
+<meta property="og:image" content="https://bu.dusays.com/2024/11/21/673ef4d76891d.png">
+<meta property="og:image" content="https://bu.dusays.com/2024/11/21/673f1c5e64bea.png">
+<meta property="og:image" content="https://bu.dusays.com/2024/11/21/673f31c813942.png">
+<meta property="article:published_time" content="2024-12-11T05:55:52.000Z">
+<meta property="article:modified_time" content="2024-12-11T05:56:15.938Z">
+<meta property="article:author" content="如河">
+<meta property="article:tag" content="学习记录">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bu.dusays.com/2024/11/21/673ee8f79c446.png">
+
+<link rel="canonical" href="https://bornleader10.github.io/2024/12/11/Cplusplus02%E8%81%94%E5%90%88%E4%BD%93%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Cplusplus02联合体和字符串 | 暮色回想</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">暮色回想</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">超越情绪 变得更强</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bornleader10.github.io/2024/12/11/Cplusplus02%E8%81%94%E5%90%88%E4%BD%93%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+      <meta itemprop="name" content="如河">
+      <meta itemprop="description" content="一起学习 超越情绪 变得更强">
+    </span>
+<span class="post-time">
+  &nbsp; |
+<span class="post-meta-item-icon">
+  <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">字数统计:</span>
+<span class="post-count">3.3k(字)</span>
+</span>
+
+<span class="post-time">
+  &nbsp; | 
+<span class="post-meta-item-icon">
+<i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">阅读时长≈</span>
+<span class="post-count">15(分)</span>
+&nbsp; | 
+</span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暮色回想">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cplusplus02联合体和字符串
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-12-11 13:55:52 / 修改时间：13:56:15" itemprop="dateCreated datePublished" datetime="2024-12-11T13:55:52+08:00">2024-12-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>联合体语法</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//示范</span></span><br><span class="line"><span class="keyword">union</span> <span class="title class_">USER</span></span><br><span class="line">&#123;	</span><br><span class="line">    <span class="type">short</span> sHP;</span><br><span class="line">    <span class="type">int</span> nHP;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 通过union 可以创建一个联合体，union中的成员变量共享内存，因此union的数据类型大小由其最大的成员变量决定。</span></span><br></pre></td></tr></table></figure>
+
+<p>实践一下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 联合体</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">union</span> <span class="title class_">USER</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">short</span> sHP;</span><br><span class="line">	<span class="type">int</span> nHP;</span><br><span class="line">	<span class="type">double</span> fHP;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">union</span> &#123;</span><br><span class="line">	<span class="type">short</span> sHP;</span><br><span class="line">	<span class="type">int</span> nHP;</span><br><span class="line">	<span class="type">double</span> fHP;</span><br><span class="line">&#125; ls;<span class="comment">// 不重用，临时的 </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">	<span class="type">short</span> sHP;</span><br><span class="line">	<span class="type">int</span> nHP;</span><br><span class="line">	<span class="type">double</span> fHP;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 内存分配   没有初始化</span></span><br><span class="line">	USER user;</span><br><span class="line">	Test t;</span><br><span class="line">	std::cout &lt;&lt; <span class="built_in">sizeof</span>(user) &lt;&lt; std::endl; </span><br><span class="line">	std::cout &lt;&lt; <span class="built_in">sizeof</span>(t) &lt;&lt; std::endl;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	user.sHP = <span class="number">100</span>;<span class="comment">//[100][0][][][][][][]</span></span><br><span class="line">	std::cout &lt;&lt; user.sHP &lt;&lt; std::endl;  <span class="comment">// 100</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//[100][0][？][？][？][？][？][？]</span></span><br><span class="line">	<span class="comment">// 访问4个格子，但有俩没有初始化，不知道是什么值</span></span><br><span class="line">	std::cout &lt;&lt; user.nHP &lt;&lt; std::endl;  </span><br><span class="line">	user.nHP = <span class="number">0</span>;</span><br><span class="line">	std::cout &lt;&lt; user.nHP &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>未命名的联合体是供临时使用的！</p>
+<p><strong>C 语言中 字符串的拼接</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[<span class="number">0x10</span>] = <span class="string">&quot;123&quot;</span>;</span><br><span class="line"><span class="type">char</span> strB[<span class="number">0x10</span>] = <span class="string">&quot;456&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> strC[<span class="number">0x20</span>];</span><br><span class="line"><span class="built_in">memcpy</span>(strC, str, <span class="built_in">strlen</span>(str));</span><br><span class="line"><span class="built_in">memcpy</span>(strC + <span class="built_in">strlen</span>(str), strB, <span class="built_in">strlen</span>(strB) + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; strC;</span><br></pre></td></tr></table></figure>
+
+<p><strong>C++ 中 字符串拼接</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">string str&#123;<span class="string">&quot;12345&quot;</span>&#125;;</span><br><span class="line"><span class="comment">// 不必考虑溢出</span></span><br><span class="line">std::cout &lt;&lt; str &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">string str1&#123; <span class="string">&quot;123455&quot;</span>, <span class="number">3</span> &#125;; <span class="comment">// 只要前面三个字符串</span></span><br><span class="line">std::cout &lt;&lt; str1 &lt;&lt; std::endl;  <span class="comment">// 输出123</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">string str2&#123; <span class="string">&quot;0123456&quot;</span>,<span class="number">2</span>,<span class="number">3</span> &#125;;  <span class="comment">// 从2开始截取3位</span></span><br><span class="line">std::cout &lt;&lt; str2 &lt;&lt; std::endl;</span><br><span class="line"><span class="comment">// 对中文支持的不太好</span></span><br><span class="line">string str3&#123; <span class="string">&quot;你好啊啊啊&quot;</span>, <span class="number">3</span> &#125;;</span><br><span class="line">std::cout &lt;&lt; str3 &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">str4</span><span class="params">(<span class="number">6</span>, <span class="string">&#x27;a&#x27;</span>)</span></span>;  <span class="comment">// 6个  a</span></span><br><span class="line"><span class="function">string <span class="title">str5</span><span class="params">(<span class="number">6</span>, <span class="number">65</span>)</span></span>;  <span class="comment">//转成大写的A</span></span><br><span class="line">std::cout &lt;&lt; str4 &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; str5 &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 连接字符串</span></span><br><span class="line">string str6, str7;</span><br><span class="line">str6 = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">str7 = <span class="string">&quot;456&quot;</span>;</span><br><span class="line"></span><br><span class="line">str6 = str7 + <span class="string">&quot; &quot;</span> + <span class="string">&quot;123&quot;</span>;  <span class="comment">// 这里一定要有string 类型的变量在这里</span></span><br><span class="line">std::cout &lt;&lt; str6 &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 把数字转换成字符串</span></span><br><span class="line"><span class="type">int</span> age;</span><br><span class="line">std::cin &gt;&gt; age;</span><br><span class="line"></span><br><span class="line">string st;</span><br><span class="line">st = <span class="string">&quot; 用户的年龄是：&quot;</span>;</span><br><span class="line">str7 = st + std::<span class="built_in">to_string</span>(age);</span><br><span class="line">std::cout &lt;&lt; str7;</span><br></pre></td></tr></table></figure>
+
+<p><strong>C++ 中字符串拼接（进阶）</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SoftName <span class="string">&quot;EDY&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SoftVersion <span class="string">&quot;2.0&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	string str;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//str = &quot;1233&quot; + &quot;1222&quot;;</span></span><br><span class="line">	<span class="comment">// 不能直接连接两个字符串</span></span><br><span class="line">	str = string&#123; <span class="string">&quot;!22&quot;</span> &#125; + <span class="string">&quot;1233&quot;</span>;  <span class="comment">// 把字符串放到临时变量里面就可以了</span></span><br><span class="line"></span><br><span class="line">	 <span class="comment">//str = &quot;1233&quot; + &quot;bcbc&quot; + string&#123; &quot;!22&quot; &#125;;   error</span></span><br><span class="line">	<span class="comment">// 前面两个加法是直接的字符串的字面量</span></span><br><span class="line">	<span class="comment">//改进</span></span><br><span class="line">	str = <span class="string">&quot;abc&quot;</span> + (<span class="string">&quot;bcd&quot;</span> + string&#123; <span class="string">&quot;123&quot;</span> &#125;); <span class="comment">// 这样就可以了</span></span><br><span class="line"></span><br><span class="line">	str += <span class="string">&quot;aka&quot;</span>;  <span class="comment">// 没问题</span></span><br><span class="line">	<span class="comment">//str += &quot;aka&quot; + &quot;bka&quot;;    +的优先级大于   +=</span></span><br><span class="line">	<span class="comment">// 解决办法如下</span></span><br><span class="line">	str += <span class="string">&quot;aka&quot;</span> + string&#123; <span class="string">&quot;bka&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	string strB;</span><br><span class="line">	<span class="comment">// 连接</span></span><br><span class="line">	strB = <span class="string">&quot;!23&quot;</span><span class="string">&quot;233&quot;</span>;</span><br><span class="line">	<span class="comment">// 唯一用途</span></span><br><span class="line">	strB = SoftName SoftVersion;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 字符串连接  字符</span></span><br><span class="line">    string strC&#123;<span class="string">&quot;123&quot;</span>&#125;;</span><br><span class="line">    <span class="type">char</span> a;</span><br><span class="line">    std::cin &gt;&gt; a;</span><br><span class="line">    str += a;  <span class="comment">// 允许这样连接</span></span><br><span class="line">    <span class="comment">// 注意事项</span></span><br><span class="line">    str += a + <span class="string">&#x27;o&#x27;</span>;  <span class="comment">// 两个字符  是俩常量，可以相加    字符a 与 字符o相加之后再连接</span></span><br><span class="line">    <span class="comment">// 相当于</span></span><br><span class="line">    str += <span class="built_in">char</span>(a + <span class="string">&#x27;o&#x27;</span>);</span><br><span class="line">    <span class="comment">// 字符串不能相加的原因是， 字符串是两个char类型的数组</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//拼接方法</span></span><br><span class="line">    string strD&#123;<span class="string">&quot;123&quot;</span>&#125;;</span><br><span class="line">    strD.<span class="built_in">append</span>(<span class="string">&quot;456&quot;</span>);  <span class="comment">// 在字符串后面拼接上456</span></span><br><span class="line">    strD.<span class="built_in">append</span>(<span class="string">&quot;222&quot;</span>).<span class="built_in">append</span>(<span class="string">&quot;dfddd&quot;</span>);  <span class="comment">// 无限  加append</span></span><br><span class="line">    <span class="comment">// 拼接的时候也可以有选择</span></span><br><span class="line">    strD.<span class="built_in">append</span>(<span class="string">&quot;123455&quot;</span>, <span class="number">2</span>); <span class="comment">// 从2开始拼接   跟字符串初始化用法一样</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>截取字符串</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.<span class="built_in">substr</span>(起始位置,要截取的长度);</span><br><span class="line"></span><br><span class="line">std::string str&#123;<span class="string">&quot;123456&quot;</span>&#125;;</span><br><span class="line">std::string strsub&#123;str.<span class="built_in">substr</span>(<span class="number">1</span>)&#125;;  <span class="comment">// strsub = &quot;23456&quot;</span></span><br><span class="line">std::string strsubA&#123;str.<span class="built_in">substr</span>(<span class="number">1</span>, <span class="number">3</span>)&#125;; <span class="comment">// strsubA = &quot;234&quot;;</span></span><br><span class="line"></span><br><span class="line">string strB;</span><br><span class="line"><span class="comment">// 也可以连着截取，但是要放到一个新的string里面</span></span><br><span class="line">strB = str.<span class="built_in">substr</span>(<span class="number">7</span>).<span class="built_in">substr</span>(<span class="number">3</span>);  <span class="comment">// 提取从索引7开始的子字符串（包括索引 7 的字符）， 直到字符串末尾。.substr(3) 在上一步的基础上，从索引 3 开始提取子字符串 （包括索引3 的字符）， 直到字符串末尾。</span></span><br><span class="line"><span class="comment">// 字符串的索引也是从0开始的</span></span><br><span class="line"><span class="comment">// substr不会改变str的值，而append会改变</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>计算字符串长度</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string str&#123;<span class="string">&quot;222222&quot;</span>&#125;;</span><br><span class="line"><span class="comment">// 对中文字符串长度的计算还是不准确</span></span><br><span class="line">std::cout &lt;&lt; str.<span class="built_in">length</span>();</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个正常计算字符串的方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;locale&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置区域为中文   确保宽字符输入/输出流能正确处理中文字符。</span></span><br><span class="line">    <span class="built_in">setlocale</span>(LC_ALL, <span class="string">&quot;chs&quot;</span>);</span><br><span class="line">    <span class="type">wchar_t</span> wstr[<span class="number">255</span>]; <span class="comment">// 定义宽字符数组</span></span><br><span class="line">    std::wcout &lt;&lt; <span class="string">L&quot;请输入一个字符串: &quot;</span>;</span><br><span class="line">    std::wcin.<span class="built_in">getline</span>(wstr, <span class="number">255</span>); <span class="comment">// 使用宽字符输入</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> length = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; wstr[i] != <span class="string">L&#x27;\0&#x27;</span>; ++i) &#123; <span class="comment">// 遍历宽字符数组</span></span><br><span class="line">        ++length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    std::wcout &lt;&lt; <span class="string">L&quot;字符串的长度是: &quot;</span> &lt;&lt; length &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>字符串比较</strong></p>
+<p>1️⃣ 比较相同的内容</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>* str_1&#123;(<span class="type">char</span>*)<span class="string">&quot;123456&quot;</span>&#125;;</span><br><span class="line"><span class="type">char</span>* str_2&#123;(<span class="type">char</span>*)<span class="string">&quot;123456&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; (str1 == str2) &lt;&lt; std::endl;  <span class="comment">// 地址相等，进行优化之后指向相同的位置</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>* str_1&#123;(<span class="type">char</span>*)<span class="string">&quot;123456&quot;</span>&#125;;</span><br><span class="line"><span class="type">char</span>* str_2 = <span class="keyword">new</span> <span class="type">char</span>[<span class="number">7</span>];</span><br><span class="line">std::cin &gt;&gt; str_2;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; (str1 == str2) &lt;&lt; std::endl;  <span class="comment">// 输入123456  是不相等的</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">string str_1&#123;<span class="string">&quot;123456&quot;</span>&#125;;</span><br><span class="line">string str_2;</span><br><span class="line"></span><br><span class="line">std::cin &gt;&gt; str_2;</span><br><span class="line">std::cout &lt;&lt; (str1 == str2) &lt;&lt; std::endl;   <span class="comment">// 手动输入123456   是相等的</span></span><br></pre></td></tr></table></figure>
+
+<p>2️⃣ 比较不同的内容</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">string str_1&#123;<span class="string">&quot;abcdef&quot;</span>&#125;;</span><br><span class="line">string str_2&#123;<span class="string">&quot;bcdefg&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从第一个字符开始比较，如果比出来大小后面就不比较了</span></span><br><span class="line"><span class="keyword">if</span>(str_1 &gt; str_2)</span><br><span class="line">&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;大于&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> std::cout &lt;&lt; <span class="string">&quot;小于等于&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string str_1&#123;<span class="string">&quot;abcdef&quot;</span>&#125;;</span><br><span class="line">str<span class="number">1.</span><span class="built_in">compare</span>(<span class="string">&quot;bcdefg&quot;</span>); <span class="comment">// 返回一个int类型的值</span></span><br><span class="line"><span class="comment">// 如果str1比另外一个字符串小返回负数 -1， 如果相等返回 0  如果大于返回 1</span></span><br></pre></td></tr></table></figure>
+
+<p>3️⃣ 截取一段之后进行比较</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string strA&#123;<span class="string">&quot;abc cdef&quot;</span>&#125;;</span><br><span class="line">strA.<span class="built_in">compare</span>(<span class="number">5</span>,<span class="number">4</span>,<span class="string">&quot;cdef&quot;</span>); <span class="comment">// 截取的是strA   compare(起始位置,参与比较的长度,被比较的字符串);</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string strA&#123;<span class="string">&quot;abc cdef&quot;</span>&#125;;</span><br><span class="line">strA.<span class="built_in">compare</span>(<span class="number">5</span>,<span class="number">4</span>,<span class="string">&quot;cdef ghijklm&quot;</span>, <span class="number">0</span>, <span class="number">4</span>); <span class="comment">// 前面截图的strA， 后面截取的是&quot;cdef ghijklm&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">string strA&#123;<span class="string">&quot;username:5620;studentId:655555&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; strA.<span class="built_in">find</span>(<span class="string">&quot;studentId:&quot;</span>); <span class="comment">// 返回字符串的起始位置</span></span><br><span class="line">std::cout &lt;&lt; strA.<span class="built_in">substr</span>(strA.<span class="built_in">find</span>(<span class="string">&quot;studentId:&quot;</span>)); <span class="comment">// 输出  studentId:655555</span></span><br><span class="line">std::cout &lt;&lt; strA.<span class="built_in">substr</span>(strA.<span class="built_in">find</span>(<span class="string">&quot;studentId:&quot;</span>) + <span class="number">10</span>); <span class="comment">//输出655555</span></span><br></pre></td></tr></table></figure>
+
+<p>补充  find()  方法 的用法</p>
+<p><img src="https://bu.dusays.com/2024/11/21/673ee8f79c446.png"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">str.<span class="built_in">find</span>(<span class="string">&quot;sdajklfdkasjlkfjlas&quot;</span>, <span class="number">0</span>, <span class="number">10</span>); <span class="comment">//在字符串 str 中，从位置 0 开始，查找字符串 &quot;sdajklfdkasjlkfjlas&quot; 的前 10 个字符是否存在。</span></span><br></pre></td></tr></table></figure>
+
+<p>倒着搜索</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 表示从字符串 str 的 索引 0 位置向前（从右到左查找）寻找目标字符串 &quot;sdajklfdkasjlkfjlas&quot;</span></span><br><span class="line">str.<span class="built_in">rfind</span>(<span class="string">&quot;sdajklfdkasjlkfjlas&quot;</span>, <span class="number">0</span>); </span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>字符串的应用–小项目</strong></p>
+<p><img src="https://bu.dusays.com/2024/11/21/673ef4d76891d.png"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	string str&#123; <span class="string">&quot;id=user;pas=632105;role=阿森;&quot;</span> &#125;;</span><br><span class="line">	string strIn;</span><br><span class="line">	string strOut;</span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;请输入您要查阅的属性：\n&quot;</span>;</span><br><span class="line">		std::cin &gt;&gt; strIn;</span><br><span class="line">		<span class="type">int</span> lfind = str.<span class="built_in">find</span>(strIn + <span class="string">&quot;=&quot;</span>);</span><br><span class="line">		<span class="keyword">if</span> (lfind == std::string::npos)</span><br><span class="line">			std::cout &lt;&lt; <span class="string">&quot;查找的属性不存在&quot;</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> lend = str.<span class="built_in">find</span>(<span class="string">&quot;;&quot;</span>, lfind);</span><br><span class="line">			strOut = str.<span class="built_in">substr</span>(lfind + strIn.<span class="built_in">length</span>() + <span class="number">1</span>, lend - lfind - strIn.<span class="built_in">length</span>() - <span class="number">1</span>);</span><br><span class="line">			std::cout &lt;&lt; strOut &lt;&lt; std::endl;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>插入字符串</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 语法</span></span><br><span class="line">.<span class="built_in">insert</span>();</span><br><span class="line">string id&#123;<span class="string">&quot;id=;&quot;</span>&#125;;</span><br><span class="line">id.<span class="built_in">insert</span>(<span class="number">3</span>,<span class="string">&quot;testId&quot;</span>);</span><br><span class="line">std::cout &lt;&lt; id;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bu.dusays.com/2024/11/21/673f1c5e64bea.png"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法二</span></span><br><span class="line">string id&#123;<span class="string">&quot;id=&quot;</span>&#125;;</span><br><span class="line"><span class="comment">// 从索引插入6个*</span></span><br><span class="line">id.<span class="built_in">insert</span>(<span class="number">3</span>,<span class="number">6</span>,<span class="string">&#x27;*&#x27;</span>);</span><br><span class="line">std::cout &lt;&lt; id &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">id.<span class="built_in">insert</span>(<span class="number">3</span>, <span class="string">&quot;testid&quot;</span>);</span><br><span class="line">std::cout &lt;&lt; id;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">string id&#123;<span class="string">&quot;id=&quot;</span>&#125;;</span><br><span class="line"><span class="comment">// 3 是从id字符串索引3开始插入，后面的第一个6是从字符串&quot;killertestid&quot;索引6开始插入6个字符到字符串id中</span></span><br><span class="line">id.<span class="built_in">insert</span>(<span class="number">3</span>,<span class="string">&quot;killertestid&quot;</span>, <span class="number">6</span>, <span class="number">6</span>);</span><br><span class="line">std::cout &lt;&lt; id &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string id&#123;<span class="string">&quot;id=&quot;</span>&#125;;</span><br><span class="line"><span class="comment">// 在id字符串索引3开始插入 ，  然后从字符串&quot;killertestid123456&quot;的k开始插入6个</span></span><br><span class="line">id.<span class="built_in">insert</span>(<span class="number">3</span>,<span class="string">&quot;killertestid123456&quot;</span>,<span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>指针数组字符串</strong></p>
+<p>str和 str[0] 不是一个位置，具体跟数组有区别，涉及到运算符重载</p>
+<p>str的地址和str[0]的地址差4</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string str&#123;<span class="string">&quot;12344&quot;</span>&#125;;</span><br><span class="line"><span class="comment">// 不转int会当作字符串来输出</span></span><br><span class="line">std::cout &lt;&lt; (<span class="type">int</span>)&amp;str &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">0</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">1</span>];</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">string str&#123;<span class="string">&quot;12345&quot;</span>&#125;;</span><br><span class="line">std::cout &lt;&lt; str[<span class="number">0</span>] &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; (<span class="type">int</span>)&amp;str &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">0</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">1</span>] &lt;&lt; std::endl;</span><br><span class="line">str = str + <span class="string">&quot;534894539823478923&quot;</span>;</span><br><span class="line"><span class="comment">// str  跟 str[0]地址相差就很多了，需要重新分配内存地址</span></span><br><span class="line">std::cout &lt;&lt; (<span class="type">int</span>)&amp;str &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">0</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">1</span>] &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">// .c_str() 返回的是 const char*，不能直接通过指针修改字符串内容。</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* baseStr = str.<span class="built_in">c_str</span>();</span><br><span class="line"><span class="comment">// baseStr[0] = &#x27;5&#x27;;   不允许修改</span></span><br><span class="line">std::cout &lt;&lt; (<span class="type">int</span>)&amp;str &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">0</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">1</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)baseStr &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// C++ 17 之后 .data()方法得到的是一个char* 的指针</span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* dataStr = str.<span class="built_in">data</span>();</span><br><span class="line"><span class="comment">// dataStr[0] = &#x27;5&#x27;;   不允许修改</span></span><br><span class="line">std::cout &lt;&lt; (<span class="type">int</span>)&amp;str &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">0</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)&amp;str[<span class="number">1</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="type">int</span>)baseStr &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>返回一个 <code>const char*</code> 指针，指向以空字符 <code>\0</code> 结尾的 C 风格字符串。</li>
+<li>返回的字符串数据与 <code>std::string</code> 对象内部保持一致，但不能修改返回值（它是 <code>const</code> 的）。</li>
+</ul>
+<p><strong>字符串替换</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 语法1</span></span><br><span class="line">.<span class="built_in">replace</span>(要替换的内容的起始位置，要替换的长度，“替换后的内容”);</span><br><span class="line"></span><br><span class="line">string strId&#123;<span class="string">&quot;id=user;&quot;</span>&#125;;</span><br><span class="line"><span class="comment">// 替换从索引 3 开始的 4 个字符为 &quot;zhangsan&quot;</span></span><br><span class="line">strId.replace&#123;<span class="number">3</span>,<span class="number">4</span>,<span class="string">&quot;zhangsan&quot;</span>&#125;;</span><br><span class="line">std::cout &lt;&lt; strId;  <span class="comment">// id=zhangsan</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 语法2</span></span><br><span class="line">.<span class="built_in">replace</span>(要替换的内容的起始位置，要替换的长度，替换后的字符长度，‘字符’);</span><br><span class="line"><span class="comment">// 替换从索引 3 开始的 4 个字符，用 6 个 &#x27;*&#x27; 替换</span></span><br><span class="line">str.<span class="built_in">replace</span>(<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="string">&#x27;*&#x27;</span>);</span><br><span class="line"><span class="comment">// str的内容为：id=******</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 语法3</span></span><br><span class="line">.<span class="built_in">replace</span>(要替换的内容的起始位置，要替换的长度，<span class="string">&quot;替换后的内容&quot;</span>，替换后内容的长度节选);</span><br><span class="line"><span class="comment">// 替换从索引 3 开始的 4 个字符，用 &quot;zhangsan!pkaq&quot; 的前 8 个字符替换</span></span><br><span class="line">str.<span class="built_in">replace</span>(<span class="number">3</span>,<span class="number">4</span>,<span class="string">&quot;zhangsan!pkaq&quot;</span>,<span class="number">8</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 语法4</span></span><br><span class="line">.<span class="built_in">replace</span>(要替换的内容的起始位置，要替换的长度，<span class="string">&quot;替换后的内容&quot;</span>，替换后的内容的起始位置，替换后内容的长度节选);</span><br><span class="line"><span class="comment">// 替换从索引 3 开始的 4 个字符，用 &quot;zhangsan!pkaq&quot; 的从第9个字符开始截取，截取4个</span></span><br><span class="line">str.<span class="built_in">replace</span>(<span class="number">3</span>,<span class="number">4</span>,<span class="string">&quot;zhangsan!pkaq&quot;</span>,<span class="number">9</span>，,<span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>删除字符串内容</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 语法1</span></span><br><span class="line">.<span class="built_in">erase</span>(要删除的起始位置,要删除的起始长度);</span><br><span class="line"></span><br><span class="line">string str&#123;<span class="string">&quot;id=user;&quot;</span>&#125;;</span><br><span class="line">str.<span class="built_in">erase</span>(<span class="number">3</span>,<span class="number">4</span>);</span><br><span class="line"><span class="comment">// id=;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 语法2</span></span><br><span class="line">.<span class="built_in">erase</span>(要删除的起始位置); <span class="comment">// 从起始位置开始删除所有内容</span></span><br><span class="line">string str&#123;<span class="string">&quot;id=user;&quot;</span>&#125;;</span><br><span class="line">str.<span class="built_in">erase</span>(<span class="number">3</span>);</span><br><span class="line"><span class="comment">// id = </span></span><br><span class="line"></span><br><span class="line">.<span class="built_in">erase</span>();   <span class="comment">//删除字符串所有内容   擦除</span></span><br><span class="line">.<span class="built_in">clear</span>();   <span class="comment">//删除字符串所有内容   清零</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>字符串（补充）</strong></p>
+<p>计算字符串长度</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">string strIn;</span><br><span class="line">std::cin &gt;&gt; strIn;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> length&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; strIn[i]; i ++ )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 在 ASCII 编码中，单字节字符（如英文、数字）均为非负数（0-127）</span></span><br><span class="line">    <span class="keyword">if</span> (strIn[i] &lt; <span class="number">0</span>) i ++ ;</span><br><span class="line">    length ++ ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这样就能统计出字符个数了</span></span><br><span class="line">std::cout &lt;&lt; length;</span><br></pre></td></tr></table></figure>
+
+<p>字符串转换</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string cIn = <span class="string">&quot;123&quot;</span>;</span><br><span class="line"><span class="type">int</span> x = std::<span class="built_in">stoi</span>(cIn); <span class="comment">// 转换成int类型</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bu.dusays.com/2024/11/21/673f31c813942.png"></p>
+<p>字符串流</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::stringstream;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    stringstream strS;</span><br><span class="line">    <span class="comment">// 这是按照16进制来输出的</span></span><br><span class="line">    strS &lt;&lt; <span class="string">&quot;你好&quot;</span> &lt;&lt; <span class="string">&quot;123 [&quot;</span> &lt;&lt; std::hex &lt;&lt; <span class="number">12530</span> &lt;&lt; <span class="string">&quot;]&quot;</span>;</span><br><span class="line">    string strX = strS.<span class="built_in">str</span>();</span><br><span class="line">    std::cout &lt;&lt; strX;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>字符串项目</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">Role</span></span><br><span class="line">&#123;</span><br><span class="line">    string Id;</span><br><span class="line">    <span class="type">int</span> Exp;</span><br><span class="line">&#125;*PROLE;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    string strData = <span class="string">&quot;id=Tomy Clare;exp=9523;id=Sunny;exp=9523;id=DyBaby;exp=25301;id=Simple;exp=25301;id=Bkacs11;exp=2100;id=Dudu;exp=2122;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> istart&#123;&#125;, iend&#123;&#125;, icount&#123;&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; strData.<span class="built_in">length</span>(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (strData[i] == <span class="string">&#x27;;&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            icount++;</span><br><span class="line">            i += <span class="number">3</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    PROLE pRole = <span class="keyword">new</span> Role[icount / <span class="number">2</span>];</span><br><span class="line">    icount = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 查找到id=   则把istart 将更新为 &quot;id=&quot; 首次出现的索引</span></span><br><span class="line">        istart = strData.<span class="built_in">find</span>(<span class="string">&quot;id=&quot;</span>, istart);</span><br><span class="line">        <span class="keyword">if</span> (istart == std::string::npos) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        iend = strData.<span class="built_in">find</span>(<span class="string">&quot;;&quot;</span>, istart + <span class="number">3</span>);</span><br><span class="line">        <span class="comment">// 从istart开始截取，截取长度就是iend-istart-3</span></span><br><span class="line">        pRole[icount].Id = strData.<span class="built_in">substr</span>(istart + <span class="number">3</span>, iend - istart - <span class="number">3</span>);</span><br><span class="line">        istart = iend + <span class="number">1</span>;</span><br><span class="line">        iend = strData.<span class="built_in">find</span>(<span class="string">&quot;;&quot;</span>, istart + <span class="number">4</span>);</span><br><span class="line">        <span class="comment">// 在这里 icount ++ 省去后面再++ 了</span></span><br><span class="line"></span><br><span class="line">        pRole[icount++].Exp = std::<span class="built_in">stoi</span>(strData.<span class="built_in">substr</span>(istart + <span class="number">4</span>, iend - istart - <span class="number">4</span>));</span><br><span class="line">        istart = iend + <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 冒泡排序  经典冒泡排序</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; icount - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; icount - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (pRole[j].Exp &lt; pRole[j + <span class="number">1</span>].Exp ||</span><br><span class="line">                (pRole[j].Exp == pRole[j + <span class="number">1</span>].Exp &amp;&amp; pRole[j].Id &gt; pRole[j + <span class="number">1</span>].Id)) &#123;</span><br><span class="line">                Role temp = pRole[j];</span><br><span class="line">                pRole[j] = pRole[j + <span class="number">1</span>];</span><br><span class="line">                pRole[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; icount; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; pRole[i].Id &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; pRole[i].Exp &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="tag"># 学习记录</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/12/11/Cplusplus01%E6%95%B0%E7%BB%84%E3%80%81%E5%AE%B9%E5%99%A8%E6%8C%87%E9%92%88/" rel="prev" title="Cplusplus01数组、容器指针">
+      <i class="fa fa-chevron-left"></i> Cplusplus01数组、容器指针
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/12/11/Cplusplus03%E5%87%BD%E6%95%B0/" rel="next" title="Cplusplus03函数">
+      Cplusplus03函数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+	
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="如河"
+      src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+  <p class="site-author-name" itemprop="name">如河</p>
+  <div class="site-description" itemprop="description">一起学习 超越情绪 变得更强</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bornleader10" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bornleader10" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:a1453323218@gmail.com" title="E-Mail → mailto:a1453323218@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">如河</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

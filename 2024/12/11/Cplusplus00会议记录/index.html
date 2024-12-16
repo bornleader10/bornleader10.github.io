@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bornleader10.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="2024.11.11  第一次会议没有回答好的内容： ASCII、Unicode编码，enum 和 enum class的区别  ASCII、Unicode编码  ASCII码使用指定的7位或者8位二进制数组合来表示128或256种可能的字符。标准的ASCII码使用7位二进制数(剩下一位二进制位0)来表示所有的大写字母和小写字母，数字0-9、标点符号，以及在美式英语中使用的特殊控制字符。最后一位用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cplusplus00会议记录">
+<meta property="og:url" content="https://bornleader10.github.io/2024/12/11/Cplusplus00%E4%BC%9A%E8%AE%AE%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="暮色回想">
+<meta property="og:description" content="2024.11.11  第一次会议没有回答好的内容： ASCII、Unicode编码，enum 和 enum class的区别  ASCII、Unicode编码  ASCII码使用指定的7位或者8位二进制数组合来表示128或256种可能的字符。标准的ASCII码使用7位二进制数(剩下一位二进制位0)来表示所有的大写字母和小写字母，数字0-9、标点符号，以及在美式英语中使用的特殊控制字符。最后一位用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bu.dusays.com/2024/11/13/6734516268bb0.png">
+<meta property="og:image" content="https://bu.dusays.com/2024/11/13/673451626be7b.png">
+<meta property="og:image" content="https://bu.dusays.com/2024/11/19/673c83b590a66.png">
+<meta property="article:published_time" content="2024-12-11T05:53:28.000Z">
+<meta property="article:modified_time" content="2024-12-11T05:53:58.283Z">
+<meta property="article:author" content="如河">
+<meta property="article:tag" content="会议">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bu.dusays.com/2024/11/13/6734516268bb0.png">
+
+<link rel="canonical" href="https://bornleader10.github.io/2024/12/11/Cplusplus00%E4%BC%9A%E8%AE%AE%E8%AE%B0%E5%BD%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Cplusplus00会议记录 | 暮色回想</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">暮色回想</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">超越情绪 变得更强</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bornleader10.github.io/2024/12/11/Cplusplus00%E4%BC%9A%E8%AE%AE%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+      <meta itemprop="name" content="如河">
+      <meta itemprop="description" content="一起学习 超越情绪 变得更强">
+    </span>
+<span class="post-time">
+  &nbsp; |
+<span class="post-meta-item-icon">
+  <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">字数统计:</span>
+<span class="post-count">3.9k(字)</span>
+</span>
+
+<span class="post-time">
+  &nbsp; | 
+<span class="post-meta-item-icon">
+<i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">阅读时长≈</span>
+<span class="post-count">15(分)</span>
+&nbsp; | 
+</span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暮色回想">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cplusplus00会议记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-12-11 13:53:28 / 修改时间：13:53:58" itemprop="dateCreated datePublished" datetime="2024-12-11T13:53:28+08:00">2024-12-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BC%9A%E8%AE%AE%E5%86%85%E5%AE%B9%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">会议内容记录</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="2024-11-11-第一次会议"><a href="#2024-11-11-第一次会议" class="headerlink" title="2024.11.11  第一次会议"></a>2024.11.11  第一次会议</h3><p>没有回答好的内容：</p>
+<p>ASCII、Unicode编码，enum 和 enum class的区别</p>
+<ol>
+<li><strong>ASCII、Unicode编码</strong></li>
+</ol>
+<p>ASCII码使用指定的7位或者8位二进制数组合来表示128或256种可能的字符。标准的ASCII码使用7位二进制数(剩下一位二进制位0)来表示所有的大写字母和小写字母，数字0-9、标点符号，以及在美式英语中使用的特殊控制字符。最后一位用于奇偶校验。</p>
+<p>ASCII是单字节编码，无法用来表示中文，所以中国制定了GB2312编码，把中文编进去。</p>
+<p>Unicode：把所有的语言都统一到一套编码里面，这样就不会有乱码的问题。最常用的是用两个字节表示一个字符（偏僻的字符使用4个字节）</p>
+<p>UTF8  可变长编码，把一个Unicode字符根据不同的数字大小编码成1-6字节，常用的英文字母被编码成 1个字节，汉字通常是三个字节，只有生僻字才被编码成4-6个字节。传输的文本含有大量英文，使用UTF-8编码就能节省空间。</p>
+<p><img src="https://bu.dusays.com/2024/11/13/6734516268bb0.png" alt="image-20241112124850995"></p>
+<p><img src="https://bu.dusays.com/2024/11/13/673451626be7b.png"></p>
+<ol start="2">
+<li><strong>enum 与 enum class</strong></li>
+</ol>
+<p>enum被称为不限定范围的枚举，enum class被称为限定范围的枚举</p>
+<p>1️⃣enum是传统的枚举类型：</p>
+<p>​	枚举值可以隐式转换成整数。</p>
+<p>​	作用域：enum中的成员是全局的，可能导致名字冲突。两个枚举类型定义了相同的枚举变量名字，就会出现错误。</p>
+<p>​	类型安全：不具备严格的类型安全，无意中与整数或其他枚举类型混用。</p>
+<p>2️⃣enum class</p>
+<p>​	作用域：enum class中的成员是局部与枚举类型本身的，不会造成名字冲突</p>
+<p>​	显示转换：要将enum class 的成员转换成整数，必须使用static_cast</p>
+<p>​	类型安全：enum class 更加安全，枚举值不会隐式转换为整数，必须显示转换</p>
+<ol start="3">
+<li><p>goto什么时候不能跳？</p>
+<p>1️⃣跳转进入其他作用域：<code>goto</code>不能跳转到一个不同作用域的标签。例如，不能从外部作用域跳转进入一个函数内部，或从循环或条件语句外部跳入其内部。</p>
+<p>2️⃣跨越对象的初始化：如果跳转会导致跨越具有非平凡析构函数的对象的初始化，则会出现编译错误。这是因为跳过对象初始化可能导致未定义行为，例如资源未正确分配。</p>
+<p>3️⃣代替结构化控制语句：<code>goto</code>语句通常不应当代替<code>for</code>、<code>while</code>、<code>do-while</code>等结构化控制语句，因为这样会使代码更难理解和维护。应优先使用这些结构化的循环和分支结构。</p>
+<p>4️⃣跨越内存管理代码块，在C++中，管理内存（如<code>new</code>和<code>delete</code>）时不宜使用<code>goto</code>，因为容易导致资源泄露。用<code>goto</code>跳过特定的代码可能导致内存或资源未释放。</p>
+</li>
+</ol>
+<h3 id="2024-11-18-第二次会议"><a href="#2024-11-18-第二次会议" class="headerlink" title="2024.11.18  第二次会议"></a>2024.11.18  第二次会议</h3><p>没有回答好的问题：智能指针、左值右值</p>
+<ol>
+<li><strong>智能指针</strong></li>
+</ol>
+<p>智能指针是C++ 中用于自动管理动态内存的对象。它是一种特殊的类，通过封装普通指针的行为，实现自动资源管理（内存释放），从而避免常见的内存泄露和悬垂指针问题。</p>
+<p>1️⃣ 独占型智能指针 std::unique_ptr</p>
+<p>独占所有权，同一时间只能有一个std::unique_ptr管理某个资源，适用于需要明确表示所有权的场景。<strong>不可复制，但可以转移所有权</strong>。</p>
+<p>示例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr1 = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">10</span>);  <span class="comment">// 分配内存并赋值</span></span><br><span class="line">    std::cout &lt;&lt; *ptr1 &lt;&lt; std::endl;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//std::unique_ptr&lt;int&gt; ptr2 = ptr1; 错误的  不允许复制</span></span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr2 = std::<span class="built_in">move</span>(ptr1); <span class="comment">// 转移所有权</span></span><br><span class="line">    <span class="keyword">if</span> (!ptr1)</span><br><span class="line">    &#123;</span><br><span class="line">        std::unique_ptr&lt;<span class="type">int</span>&gt; ptr2 = std::<span class="built_in">move</span>(ptr1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2️⃣ std::shared_ptr</p>
+<p>共享所有权，多个std::shared_ptr可以共享同一种资源。适用于多个对象需要访问同一资源的场景。使用计数管理资源。引用计数为0时，资源才会被释放。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::shared_ptr&lt;<span class="type">int</span>&gt; ptr1 = std::<span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">20</span>); <span class="comment">// 分配内存 </span></span><br><span class="line">    std::shared_ptr&lt;<span class="type">int</span>&gt; ptr2 = ptr1; <span class="comment">// 共享所有权</span></span><br><span class="line">    std::cout &lt;&lt; *ptr1 &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; *ptr2 &lt;&lt; std::endl;</span><br><span class="line">    </span><br><span class="line">    ptr<span class="number">1.</span><span class="built_in">reset</span>(); <span class="comment">// 释放ptr1对资源的引用</span></span><br><span class="line">    <span class="keyword">if</span> (!ptr1)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;ptr1 is null, but ptr2 still owns the resource.&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3️⃣ std::weak_ptr</p>
+<p>弱引用，不参与引用计数管理。解决std::share_ptr的循环引用的问题。需要使用lock() 方法将 std::weak_ptr 转化为 std::shared_ptr来访问资源。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::shared_ptr&lt;<span class="type">int</span>&gt; sharedPtr = std::<span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">30</span>);</span><br><span class="line">    std::weak_ptr&lt;<span class="type">int</span>&gt; weakPtr = sharedPtr;  <span class="comment">// 弱引用, 不增加引用计数</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">auto</span> lockedPtr = weakPtr.<span class="built_in">lock</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; *lockedPtr &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Resource is no longer available.&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    sharedPtr.<span class="built_in">reset</span>(); <span class="comment">// 释放资源</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">auto</span> lockedPtr = weakPtr.<span class="built_in">lock</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; *lockedPtr &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Resource is no longer available.&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>智能指针的<strong>优点</strong>：自动释放内存， 减少new&#x2F;delete带来的麻烦。  避免内存泄露和悬垂指针问题。  代码更简洁、更安全。  <strong>用途</strong>：动态内存分配时，确保资源被独占管理且使用完成后自动释放。管理不需要共享的资源，如文件句柄、单线程对象等。</p>
+<p>注意事项：</p>
+<p>1️⃣ 不要同时使用普通指针和智能指针管理统一资源</p>
+<p>2️⃣ std::shared_ptr 可能带来性能开销 (由于引用计数管理)。</p>
+<p>3️⃣ std::weak_ptr 解决 std::shared_ptr的循环引用问题 。</p>
+<p><strong>循环引用问题</strong> 是指在使用智能指针（尤其是 <code>std::shared_ptr</code>）时，由于两个或多个对象互相引用对方，导致引用计数永远无法降为零，资源无法释放，造成 <strong>内存泄漏</strong> 的问题。</p>
+<ol start="2">
+<li>左值和右值</li>
+</ol>
+<p>左值（lvalue, locator value）表示了一个占据内存中某个可识别的位置（也就是一个地址）的对象。</p>
+<p>右值（rvalue）则使用排除法来定义。一个表达式不是 左值 就是 右值 。那么，右值是一个 不表示内存中某个可识别位置的对象的表达式。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> var;</span><br><span class="line">var = <span class="number">4</span>;</span><br></pre></td></tr></table></figure>
+
+<p>赋值操作需要左操作数是一个左值。var是一个有内存位置的对象，因此它是左值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4</span> = var;</span><br><span class="line">(var + <span class="number">1</span>) = <span class="number">4</span>;</span><br></pre></td></tr></table></figure>
+
+<p>常量 4 和表达式 var +  1 都不是左值，因为它们都是表达式的临时结果，而没有可识的内存位置。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> <span class="number">2</span>;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 错误，foo返回的是一个临时的值。它是一个右值，赋值给它是错误的。</span></span><br><span class="line">    <span class="built_in">foo</span>() = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> globalvar = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span>&amp; <span class="title">foo</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> globalvar;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">foo</span>() = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里foo返回一个引用。引用了一个左值，因此可以赋值给它。</p>
+<p>C++ 中函数可以返回左值的功能对实现一些重载的操作符非常重要。下面是重载方括号操作符[]，来实现一些查找访问的操作，如std::map 中的方括号。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::map&lt;<span class="type">int</span>, <span class="type">float</span>&gt; mymap;</span><br><span class="line">mymap[<span class="number">10</span>] = <span class="number">5.6</span>;</span><br></pre></td></tr></table></figure>
+
+<p>之所以能赋值给mymap[10], 是因为std::map::operator[] 的重载返回的是一个可赋值的引用。</p>
+<p><strong>可修改的左值</strong></p>
+<p>可以出现在赋值操作左边的值，但是加入const关键字后，这个定义不再成立</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a = <span class="number">10</span>;  <span class="comment">// &#x27;a&#x27; 是左值</span></span><br><span class="line">a = <span class="number">10</span>;   <span class="comment">// 但不可以赋值给它</span></span><br></pre></td></tr></table></figure>
+
+<p>所以可赋值的左值被称为 可修改左值. C99标准定义可修改左值为:</p>
+<p>可修改左值是特殊的左值，不含有数组类型、不完整类型、const 修饰的类型。如果它是 <code>struct</code> 或 <code>union</code>，它的成员都（递归地）不应含有 const 修饰的类型。</p>
+<p><strong>左值与右值的转换</strong></p>
+<p>左值可以转成右值</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;     <span class="comment">// a 是左值</span></span><br><span class="line"><span class="type">int</span> b = <span class="number">2</span>;     <span class="comment">// b 是左值</span></span><br><span class="line"><span class="type">int</span> c = a + b; <span class="comment">// + 需要右值，所以 a 和 b 被转换成右值</span></span><br><span class="line">               <span class="comment">// + 返回右值</span></span><br></pre></td></tr></table></figure>
+
+<p>右值不可以转成左值,因为违反了左值的本质.  但是右值可以通过显式的方法产生左值. </p>
+<p>例如, 一元解引用运算符 ‘*’ 需要一个右值参数, 但返回一个左值结果. </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> arr[] = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="type">int</span>* p = &amp;arr[<span class="number">0</span>];</span><br><span class="line">*(p + <span class="number">1</span>) = <span class="number">10</span>;   <span class="comment">//p + 1是右值,   但*(p + 1) 是左值</span></span><br></pre></td></tr></table></figure>
+
+<p>相反的,一元去地址操作符’&amp;’ 需要一个左值参数,返回一个右值</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> var = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>* b_arr = &amp;(var + <span class="number">1</span>);  <span class="comment">// &amp;  需要左值参数</span></span><br><span class="line"><span class="type">int</span>* addr = &amp;var;    <span class="comment">// 正确,  var是左值</span></span><br><span class="line">&amp;var = <span class="number">40</span>;   <span class="comment">//错误, 赋值操作的左操作数需要的是左值</span></span><br></pre></td></tr></table></figure>
+
+<p>‘&amp;’ 符号还有另一个功能—–定义引用类型.  引用类型又叫做”左值引用”.  因此不能将一个右值赋值给(非常量的) 左值引用:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::string&amp; sref = std::<span class="built_in">string</span>();  <span class="comment">// 错误: 非常量的引用 &#x27;std::string&amp;&#x27; 错误地使用右值 &#x27;std::string&#x27; 初始化</span></span><br></pre></td></tr></table></figure>
+
+<p><em>常量的</em> 左值引用可以使用右值赋值。因为你无法通过常量的引用修改变量的值，也就不会出现修改了右值的情况。这也使得 C++ 中一个常见的习惯成为可能：函数的参数使用常量引用接收参数，避免创建不必要的临时对象。</p>
+<p><strong>CV限定的右值</strong></p>
+<p>一个非函数、非数组的类型 T 的左值可以转换为右值。 […] 如果 T 不是类类型【译注：类类型即 C++ 中使用类定义的类型，区别与内置类型】，转换后的右值的类型是 T 的 未限定 CV 的版本</p>
+<p>每个类型都有三个对应的CV-限定类型版本: const 限定   volatile 限定 和 const-volatile 限定版本.  有或无CV限定的类型是不同的类型, 但是写法和赋值需求都是相同的.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> <span class="type">const</span> </span>&#123; std::cout &lt;&lt; <span class="string">&quot;A::foo() const\n&quot;</span>; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123; std::cout &lt;&lt; <span class="string">&quot;A::foo()\n&quot;</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">A <span class="title">bar</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">A</span>(); &#125;</span><br><span class="line"><span class="function"><span class="type">const</span> A <span class="title">cbar</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">A</span>(); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">bar</span>().<span class="built_in">foo</span>();</span><br><span class="line">    <span class="built_in">cbar</span>().<span class="built_in">foo</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>main</code> 中的第二个函数调用实际上调用的是 <code>A</code> 中的 <code>foo() const</code> 函数，因为 <code>cbar</code> 返回的类型是 <code>const A</code>，这和 <code>A</code> 是两个不同的类型。这就是上面的引用中最后一句话所表达的意思。另外注意到，<code>cbar</code> 的返回值是一个右值，所以这是一个实际的 CV 限定的右值的例子。</p>
+<p><strong>右值引用</strong></p>
+<p>左值和右值的主要区别是，左值可以被修改，而右值不能。不过，C++11 改变了这一区别。在一些特殊的情况下，我们可以使用右值的引用，并对右值进行修改。</p>
+<p>使用 <code>&amp;&amp;</code> 表示。它专门用于绑定右值，从而使程序可以操作右值（临时对象）。</p>
+<p>用途: 1️⃣ 移动语义, 通过移动右值资源(如动态内存) 避免拷贝, 提升性能. 2️⃣完美转发:保留函数模板中参数的值类别(左值或右值)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::string str1 = <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">    std::string str2 = std::<span class="built_in">move</span>(str1);   <span class="comment">// std::move 将 str1 转为右值</span></span><br><span class="line">    </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;str2&quot;</span> &lt;&lt; str2 &lt;&lt; std::endl;  <span class="comment">//输出Hello</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;str1&quot;</span> &lt;&lt; str1 &lt;&lt; std::endl;  <span class="comment">// str1 的资源已经被转移, 可能为空</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bu.dusays.com/2024/11/19/673c83b590a66.png"></p>
+<p>Q: 如何判断一个表达式是左值还是右值?</p>
+<p>1️⃣ 如果能取地址 (&amp; 操作符能成功) , 则为左值</p>
+<p>2️⃣ 如果不能取地址, 但可以用作右侧赋值, 则为右值</p>
+<p>引用右值 主要是为了支持移动语义, 以减少不必要的资源拷贝, 以提高程序效率</p>
+<p>总结 :</p>
+<p> 左值 : 有明确的内存位置, 生命周期可控, 可取地址.</p>
+<p> 右值:  临时值, 生命周期短, 通常不可修改.</p>
+<p> 右值引用：通过&amp;&amp;操作符，允许操作右值，主要用于移动语义和完美转发。</p>
+<h3 id="2024-11-25-第三次会议"><a href="#2024-11-25-第三次会议" class="headerlink" title="2024.11.25 第三次会议"></a>2024.11.25 第三次会议</h3><p>没有回答好的内容： 数组指针、堆栈溢出</p>
+<h4 id="数组指针"><a href="#数组指针" class="headerlink" title="数组指针"></a>数组指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a[<span class="number">5</span>]&#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span> &#125;;</span><br><span class="line">	<span class="built_in">int</span> (*p)[<span class="number">5</span>] = &amp;a;   <span class="comment">// 数组指针</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">sizeof</span>(*p));   <span class="comment">// </span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%p\n&quot;</span>, a);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%p\n&quot;</span>, &amp;a);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%p\n&quot;</span>, &amp;a[<span class="number">0</span>]);   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>p</code> 指针指向包含五个整型元素的数组指针。注意这里的<code>(*p)</code>表明<code>p</code>是一个指针，而<code>[5]</code>表示它指向的对象是一个包含5个元素的数组。并且将 <code>p</code> 初始化为指向前面定义的数组 <code>a</code> 的地址（通过 <code>&amp;a</code> 取数组 <code>a</code> 的地址来赋值给 <code>p</code>）</p>
+<p>在这里，<code>*p</code> 实际上就是 <code>p</code> 所指向的那个包含 5 个整型元素的数组（因为 <code>p</code> 是指向数组的指针，解引用 <code>*p</code> 就得到它指向的数组本身）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%p\n&quot;</span>, a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%p\n&quot;</span>, &amp;a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%p\n&quot;</span>, &amp;a[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
+
+<p><code>printf(&quot;%p\n&quot;, a);</code>：这里输出数组 <code>a</code> 的首元素地址，前面提到数组名在很多情况下可以代表首元素地址，所以它会输出数组 <code>a</code> 第一个元素在内存中的地址。</p>
+<p><code>printf(&quot;%p\n&quot;, &amp;a);</code>：这里通过 <code>&amp;a</code> 取的是整个数组 <code>a</code> 的地址，虽然数组首元素地址的值和整个数组的地址的值在数值上通常是一样的（在绝大多数常见的实现中），但它们的类型是不同的，一个是指向数组首元素的指针（<code>int*</code> 类型的指针），另一个是指向整个数组的指针（<code>int (*)[5]</code> 类型的指针）。</p>
+<p><code>printf(&quot;%p\n&quot;, &amp;a[0]);</code>：这是取数组 <code>a</code> 的首元素 <code>a[0]</code> 的地址，其效果和直接使用 <code>a</code> （在代表首元素地址这个意义上）是一样的，同样会输出数组 <code>a</code> 第一个元素在内存中的地址。</p>
+<h4 id="指针数组"><a href="#指针数组" class="headerlink" title="指针数组"></a>指针数组</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span>* a[<span class="number">5</span>]&#123; &#125;;  <span class="comment">// 指针数组  包含5个元素，每个元素的类型都是int* </span></span><br><span class="line">	<span class="type">int</span>** p = a;   <span class="comment">// </span></span><br><span class="line">	<span class="type">int</span>* (*p)[<span class="number">5</span>] = &amp;a;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里定义了一个名为 <code>a</code> 的数组，它包含 5 个元素，每个元素的类型都是 <code>int*</code>，也就是指向整型的指针类型。通过使用初始化列表 <code>&#123; &#125;</code>，将这 5 个指针元素初始化为空指针（默认初始值）。本质上，<code>a</code> 是一个可以存放 5 个指向整型变量的指针的数组。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>** p = a;</span><br></pre></td></tr></table></figure>
+
+<p>二级指针初始化为<code>a</code>。之所以能这样赋值，是因为数组名 <code>a</code> 在这种情况下会隐式转换为指向数组首元素的指针， 而 <code>a</code> 的首元素类型是 <code>int*</code> ，所以 <code>p</code> 这个二级指针就可以指向 <code>a</code> 数组 （或者说指向 <code>a</code> 数组的首元素，首元素本身也是指针类型）。这意味着通过 <code>p</code> 可以间接操作 <code>a</code> 数组中的指针元素。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>* (*p)[<span class="number">5</span>] = &amp;a;</span><br></pre></td></tr></table></figure>
+
+<p><code>int* (*p)[5]</code> 表示 <code>p</code> 是一个指针，它指向的是一个包含5个元素的数组，而这个数组中每个元素类型又是 <code>int*</code></p>
+<p>（指向整型的指针）。然后通过 <code>&amp;a</code> 将 <code>p</code> 初始化为指向前面定义的 <code>a</code> 数组的地址。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BC%9A%E8%AE%AE/" rel="tag"># 会议</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2024/12/11/Cplusplus01%E6%95%B0%E7%BB%84%E3%80%81%E5%AE%B9%E5%99%A8%E6%8C%87%E9%92%88/" rel="next" title="Cplusplus01数组、容器指针">
+      Cplusplus01数组、容器指针 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+	
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#2024-11-11-%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BC%9A%E8%AE%AE"><span class="nav-number">1.</span> <span class="nav-text">2024.11.11  第一次会议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2024-11-18-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E4%BC%9A%E8%AE%AE"><span class="nav-number">2.</span> <span class="nav-text">2024.11.18  第二次会议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2024-11-25-%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BC%9A%E8%AE%AE"><span class="nav-number">3.</span> <span class="nav-text">2024.11.25 第三次会议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88"><span class="nav-number">3.1.</span> <span class="nav-text">数组指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84"><span class="nav-number">3.2.</span> <span class="nav-text">指针数组</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="如河"
+      src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+  <p class="site-author-name" itemprop="name">如河</p>
+  <div class="site-description" itemprop="description">一起学习 超越情绪 变得更强</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bornleader10" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bornleader10" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:a1453323218@gmail.com" title="E-Mail → mailto:a1453323218@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">如河</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

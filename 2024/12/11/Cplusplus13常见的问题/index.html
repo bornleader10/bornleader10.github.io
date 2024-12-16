@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bornleader10.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、指针和引用的区别①   定义和概念 指针：指针是一个变量，其值为另一个变量的地址。指针本质上是存储内存地址的变量 12int a &#x3D; 10;int* p &#x3D; &amp;a;  &#x2F;&#x2F; p 是指针，存储a的地址  引用：引用是一个别名，它为已有的变量创建一个新的名字。引用初始化必须与某个变量绑定，并且一旦绑定之后不能再绑定到其他变量。 12int a  &#x3D; 10;int&amp; ref &#x3D; a;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cplusplus13常见的问题">
+<meta property="og:url" content="https://bornleader10.github.io/2024/12/11/Cplusplus13%E5%B8%B8%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="暮色回想">
+<meta property="og:description" content="一、指针和引用的区别①   定义和概念 指针：指针是一个变量，其值为另一个变量的地址。指针本质上是存储内存地址的变量 12int a &#x3D; 10;int* p &#x3D; &amp;a;  &#x2F;&#x2F; p 是指针，存储a的地址  引用：引用是一个别名，它为已有的变量创建一个新的名字。引用初始化必须与某个变量绑定，并且一旦绑定之后不能再绑定到其他变量。 12int a  &#x3D; 10;int&amp; ref &#x3D; a;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-11T06:01:54.000Z">
+<meta property="article:modified_time" content="2024-12-11T06:03:12.148Z">
+<meta property="article:author" content="如河">
+<meta property="article:tag" content="编程记录">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://bornleader10.github.io/2024/12/11/Cplusplus13%E5%B8%B8%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Cplusplus13常见的问题 | 暮色回想</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">暮色回想</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">超越情绪 变得更强</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bornleader10.github.io/2024/12/11/Cplusplus13%E5%B8%B8%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+      <meta itemprop="name" content="如河">
+      <meta itemprop="description" content="一起学习 超越情绪 变得更强">
+    </span>
+<span class="post-time">
+  &nbsp; |
+<span class="post-meta-item-icon">
+  <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">字数统计:</span>
+<span class="post-count">1.4k(字)</span>
+</span>
+
+<span class="post-time">
+  &nbsp; | 
+<span class="post-meta-item-icon">
+<i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">阅读时长≈</span>
+<span class="post-count">5(分)</span>
+&nbsp; | 
+</span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暮色回想">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cplusplus13常见的问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-12-11 14:01:54 / 修改时间：14:03:12" itemprop="dateCreated datePublished" datetime="2024-12-11T14:01:54+08:00">2024-12-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="一、指针和引用的区别"><a href="#一、指针和引用的区别" class="headerlink" title="一、指针和引用的区别"></a><strong>一、指针和引用的区别</strong></h4><p><strong>①   定义和概念</strong></p>
+<p>指针：指针是一个变量，其值为另一个变量的地址。指针本质上是存储内存地址的变量</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>* p = &amp;a;  <span class="comment">// p 是指针，存储a的地址</span></span><br></pre></td></tr></table></figure>
+
+<p>引用：引用是一个别名，它为已有的变量创建一个新的名字。引用初始化必须与某个变量绑定，并且一旦绑定之后不能再绑定到其他变量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a  = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>&amp; ref = a;  <span class="comment">// ref是 a的引用，相当于a的别名。</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>②   语法差异</strong> </p>
+<p>指针语法：声明指针时候使用<code>*</code>符号、获取指针指向的变量的值需要使用解引用操作符<code>*</code>、需要显式地进行地址赋值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>* p = &amp;a;  <span class="comment">// &amp;a 表示获取a的地址</span></span><br><span class="line"><span class="type">int</span> value = *p; <span class="comment">// *p表示解引用，得到a的值</span></span><br></pre></td></tr></table></figure>
+
+<p>引用的语法：声明引用使用<code>&amp;</code>符号、引用像普通变量一样使用，不需要使用解引用操作符、引用必须在声明时进行初始化，并且无法更改引用的对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>&amp; ref = a;   <span class="comment">// ref 是 a 的引用</span></span><br><span class="line">ref = <span class="number">20</span>;		<span class="comment">// 改变a的值为20</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>③  是否允许为空值</strong></p>
+<p>指针可以为<code>nullptr</code>，这意味着指针不指向任何有效的内存地址。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>* p = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
+
+<p>引用必须始终绑定到一个有效的变量。引用不能是空的，因此在创建引用时必须确保它绑定到一个有效的变量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>&amp; ref = a;  <span class="comment">// ref必须引用一个已初始化的变量</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>④  是否可以重新绑定</strong></p>
+<p>​	指针可以在程序执行过程中重新指向不同的变量。指针是动态可变的。</p>
+<p>​	引用一旦绑定了某个变量，就不能再改变引用的对象，引用的绑定是固定的。</p>
+<p><strong>⑤  内存分配</strong></p>
+<p>指针是一个独立的变量，它需要占用内存存储地址。因此，指针本身需要内存空间。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>* p = &amp;a;  <span class="comment">// p是指针，需要为p分配内存空间</span></span><br></pre></td></tr></table></figure>
+
+<p>引用本身不占用额外的内存空间，它只是一个已经存在的变量的别名。引用的实现通常是通过指针来实现的，但从语法上它没有指针的表现。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>&amp; ref = a;  <span class="comment">// ref只是a的别名，不需要额外的内存</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>⑥  使用场景</strong></p>
+<p>指针使用于需要动态管理内存、在函数间传递大量数据时，特别是在对象动态分配、链表、树等数据结构的实现</p>
+<p>指针可以进行指针运算，例如加减操作，访问数组元素等。</p>
+<p>引用 通常用于函数参数传递（尤其是传递大对象或者需要修改参数的情况下），引用使得函数调用更加简介并且避免了拷贝 的开销。</p>
+<p>引用常用于返回对象的引用，或者作为输出参数的替代。</p>
+<p><strong>⑦  安全性</strong></p>
+<p>指针的安全性较差，容易发生空指针引用、悬挂指针等问题。例如，如果指针在使用后没有及时初始化为<code>nullptr</code>，可能会访问非法内存。</p>
+<p>引用的安全性较高，因为引用始终必须绑定到一个有效对象，且不能为<code>nullptr</code> ， 这减少了访问无效内存的风险。</p>
+<p><strong>⑧  是否可以被常量修饰</strong></p>
+<p>指针可以被<code>const</code>修饰，指针本身、指针指向的内容都可以是常量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//const 变量类型*  只能指向一个常量</span></span><br><span class="line"><span class="comment">// 特点，指针的指向可以修改，但是指针指向的值不可以修改</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> a&#123; <span class="number">100</span> &#125;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> b&#123; <span class="number">200</span> &#125;;</span><br><span class="line"><span class="type">int</span> c&#123; <span class="number">300</span> &#125;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span>* p&#123; &amp;a &#125;;</span><br><span class="line"><span class="comment">// *p = 500;  不可以修改值</span></span><br><span class="line">std::cout &lt;&lt; *p &lt;&lt; std::endl;</span><br><span class="line">p = &amp;b;  <span class="comment">// 可以修改指向</span></span><br><span class="line">p = &amp;c;  <span class="comment">// 常量指针也可以指向非常量变量</span></span><br><span class="line"><span class="comment">// *p = 2000;  常量指针就是不让改</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//特点：指针的指向不可以改，指针指向的值可以改（内存中的数据可以更改）</span></span><br><span class="line"><span class="type">int</span> a&#123; <span class="number">100</span> &#125;;</span><br><span class="line"><span class="type">int</span> b&#123; <span class="number">200</span> &#125;;</span><br><span class="line"><span class="type">int</span>* <span class="type">const</span> p&#123; &amp;a &#125;;</span><br><span class="line"><span class="comment">//p = &amp;b;   不能修改指向</span></span><br><span class="line">*p = <span class="number">999</span>;  <span class="comment">//可以修改指针指向的内存空间</span></span><br><span class="line">std::cout &lt;&lt; a &lt;&lt; std::endl; <span class="comment">//  这时候a输出 999；</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//const 变量类型* const</span></span><br><span class="line"><span class="comment">//特点：指针的指向和指针指向的值都不可以修改 </span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> a&#123; <span class="number">100</span> &#125;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> b&#123; <span class="number">200</span> &#125;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span>* <span class="type">const</span> p&#123; &amp;a &#125;;</span><br><span class="line"><span class="comment">//p = &amp;b;  不能修改指向</span></span><br><span class="line"><span class="comment">//*p = 999;  不能修改内存空间里面的值</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a&#123; <span class="number">100</span> &#125;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> b&#123; <span class="number">200</span> &#125;;</span><br><span class="line"><span class="comment">//int* pa&#123; &amp;a &#125;;   常量</span></span><br><span class="line"><span class="type">int</span>* pa&#123; (<span class="type">int</span>*)&amp;a &#125;;   <span class="comment">//通过转换是可以的</span></span><br><span class="line">*p = <span class="number">9500</span>;	<span class="comment">//这种操作是允许的，但是a的值不变</span></span><br><span class="line">std::cout &lt;&lt; *pa &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
+
+<p>引用可以是常量引用，表示不能修改引用的对象，但引用本身无法修改为指向其他对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span>&amp; ref = a;  <span class="comment">// ref是常量引用，不能修改a的值</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>总结</strong></p>
+<p>指针</p>
+<p>​	用于动态内存分配、数组、链表等数据结构。</p>
+<p>​	在函数之间传递多个值，或者需要修改函数外部的对象时使用。</p>
+<p>​	可以指向<code>nullptr</code>，适用于需要进行空指针检查的场景。</p>
+<p>​	可以进行指针运算。</p>
+<p>引用</p>
+<p>​	用于函数参数传递，避免不必要的复制，尤其是在处理大型对象时。</p>
+<p>​	用于返回对象的引用，以便函数外部能修改对象。</p>
+<p>​	比指针更加简洁、直观。</p>
+<p>​	不支持空引用，确保引用有效。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AE%B0%E5%BD%95/" rel="tag"># 编程记录</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/12/11/Cplusplus12%E8%B7%A8%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B/" rel="prev" title="Cplusplus12跨语言编程">
+      <i class="fa fa-chevron-left"></i> Cplusplus12跨语言编程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/12/11/algorithm00%E7%AE%97%E6%B3%95%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" rel="next" title="algorithm00算法遇到的问题">
+      algorithm00算法遇到的问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+	
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">一、指针和引用的区别</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="如河"
+      src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+  <p class="site-author-name" itemprop="name">如河</p>
+  <div class="site-description" itemprop="description">一起学习 超越情绪 变得更强</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bornleader10" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bornleader10" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:a1453323218@gmail.com" title="E-Mail → mailto:a1453323218@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">如河</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

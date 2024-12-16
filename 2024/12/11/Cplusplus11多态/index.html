@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bornleader10.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="多态概念 多态是面向对象编程中的一个重要概念，它允许在基类的指针或引用指向派生类对象时，调用不同的函数实现。换句话说，多态是指同一接口在不同对象中有不同的实现方式。 多态的基本分类： ①  编译时多态（静态多态）：通过函数重载和运算符重载来实现。 ② 运行时多态 （动态多态）：通过继承和虚函数来实现。 对象多态 ① 向上转型   父类&#x3D;&#x3D;&gt;子类  人是动物  ② 向下转型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cplusplus11多态">
+<meta property="og:url" content="https://bornleader10.github.io/2024/12/11/Cplusplus11%E5%A4%9A%E6%80%81/index.html">
+<meta property="og:site_name" content="暮色回想">
+<meta property="og:description" content="多态概念 多态是面向对象编程中的一个重要概念，它允许在基类的指针或引用指向派生类对象时，调用不同的函数实现。换句话说，多态是指同一接口在不同对象中有不同的实现方式。 多态的基本分类： ①  编译时多态（静态多态）：通过函数重载和运算符重载来实现。 ② 运行时多态 （动态多态）：通过继承和虚函数来实现。 对象多态 ① 向上转型   父类&#x3D;&#x3D;&gt;子类  人是动物  ② 向下转型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bu.dusays.com/2024/12/08/67550c89eea41.png">
+<meta property="og:image" content="https://bu.dusays.com/2024/12/08/67555d8e3fb89.png">
+<meta property="og:image" content="https://bu.dusays.com/2024/12/09/67568e837d723.png">
+<meta property="article:published_time" content="2024-12-11T06:01:33.000Z">
+<meta property="article:modified_time" content="2024-12-11T06:02:36.795Z">
+<meta property="article:author" content="如河">
+<meta property="article:tag" content="学习记录">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bu.dusays.com/2024/12/08/67550c89eea41.png">
+
+<link rel="canonical" href="https://bornleader10.github.io/2024/12/11/Cplusplus11%E5%A4%9A%E6%80%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Cplusplus11多态 | 暮色回想</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">暮色回想</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">超越情绪 变得更强</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bornleader10.github.io/2024/12/11/Cplusplus11%E5%A4%9A%E6%80%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+      <meta itemprop="name" content="如河">
+      <meta itemprop="description" content="一起学习 超越情绪 变得更强">
+    </span>
+<span class="post-time">
+  &nbsp; |
+<span class="post-meta-item-icon">
+  <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">字数统计:</span>
+<span class="post-count">4.2k(字)</span>
+</span>
+
+<span class="post-time">
+  &nbsp; | 
+<span class="post-meta-item-icon">
+<i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">阅读时长≈</span>
+<span class="post-count">19(分)</span>
+&nbsp; | 
+</span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暮色回想">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cplusplus11多态
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-12-11 14:01:33 / 修改时间：14:02:36" itemprop="dateCreated datePublished" datetime="2024-12-11T14:01:33+08:00">2024-12-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>多态概念</strong></p>
+<p>多态是面向对象编程中的一个重要概念，它允许在基类的指针或引用指向派生类对象时，调用不同的函数实现。换句话说，多态是指同一接口在不同对象中有不同的实现方式。</p>
+<p>多态的基本分类：</p>
+<p>①  编译时多态（静态多态）：通过函数重载和运算符重载来实现。</p>
+<p>② 运行时多态 （动态多态）：通过继承和虚函数来实现。</p>
+<p>对象多态</p>
+<p>① 向上转型   父类&#x3D;&#x3D;&gt;子类  人是动物 </p>
+<p>② 向下转型   子类&#x3D;&#x3D;&gt;父类  动物是人  相当于用子类代替父类  （大神和沙雕之间二象性）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 30多态概念.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span>  age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Human</span> :<span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> Money;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">doit</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Do it~!!!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Human laow&#123;&#125;;</span><br><span class="line">    laow.age = <span class="number">50</span>;</span><br><span class="line">    laow.Money = <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向上转型</span></span><br><span class="line">    <span class="comment">//Animal anm = laow;  // 可能发生内存切片的问题</span></span><br><span class="line">    <span class="comment">//std::cout &lt;&lt; anm.age &lt;&lt; std::endl;</span></span><br><span class="line">    <span class="comment">// 使用指针,没有内存截断问题</span></span><br><span class="line">   </span><br><span class="line">    <span class="comment">//Human* human = anm1;  // human的成员变量要比anm1多</span></span><br><span class="line">    Animal* anm1 = &amp;laow;</span><br><span class="line">    <span class="comment">// 向下转型   更大的目的是调用里面的函数</span></span><br><span class="line">    Human* human = (Human*)anm1;</span><br><span class="line"></span><br><span class="line">    human-&gt;<span class="built_in">doit</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>方法多态</strong></p>
+<p>①  静态多态： 函数重载、函数模板</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span>  age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Human</span> :<span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> Money;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">doit</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Do it~!!!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">BeAct</span><span class="params">(Human* R)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">BeAct</span><span class="params">(Animal* anm)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Human laow;</span><br><span class="line">    Animal dog;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">BeAct</span>(&amp;laow);</span><br><span class="line">    <span class="built_in">BeAct</span>(&amp;dog);  <span class="comment">// 静态多态   编译的时候决定使用哪个函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>②  动态多态</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 30多态概念.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span>  age;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">BeAct</span><span class="params">(Animal* anm)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;动物被攻击！！&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Human</span> :<span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> Money;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">doit</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Do it~!!!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">BeAct</span><span class="params">(Animal* anm)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;人物被攻击！！&quot;</span> &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Human laow;</span><br><span class="line">    Animal dog;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> id;</span><br><span class="line">    Animal* bA;</span><br><span class="line">    std::cin &gt;&gt; id;</span><br><span class="line">    <span class="keyword">if</span> (id)</span><br><span class="line">    &#123;</span><br><span class="line">        bA = &amp;dog;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> bA = &amp;laow;</span><br><span class="line">    bA-&gt;<span class="built_in">BeAct</span>(&amp;dog);  <span class="comment">// 编译的时候不确定，就叫做动态多态 ！！！</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>virtual关键字</code></strong></p>
+<p>它是一个在基类中声明，并且希望在派生类中重写（或覆盖）的方法。通过虚函数，可以实现多态性，使得程序能够在运行时根据对象的实际类型来调用适当的函数，而不是在编译时就决定调用哪个函数。</p>
+<p><img src="https://bu.dusays.com/2024/12/08/67550c89eea41.png"></p>
+<p>override 后缀可以强制要求检查函数是重载</p>
+<p>final 后缀可以终止函数的重载</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 31多态虚函数.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MoveObject</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    <span class="type">int</span> y;</span><br><span class="line">    <span class="comment">// virtual只能放在类内部声明</span></span><br><span class="line">    <span class="comment">// 不加上virtual 就是静态绑定</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">Move</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// 如果这里设置成private，那么这个函数在派生类里面用不了</span></span><br><span class="line"><span class="comment">// private:</span></span><br><span class="line">    <span class="comment">// 虚函数在派生类和基类中的返回值要求基本一致，但是当返回类型为类类型的指针和引用时除外</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> MoveObject* <span class="title">Move1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        x++;</span><br><span class="line">        y++;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MoveObject::Move</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    x++;</span><br><span class="line">    y++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NPCObject</span>:<span class="keyword">public</span> MoveObject</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 这种不是覆盖   而是动态绑定</span></span><br><span class="line">    <span class="comment">// 不重写 也能运行，因为继承了基类的Move函数，调用基类中的Move函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Move</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        x++;</span><br><span class="line">        y++;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;我是NPC\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//void Move(int a);  // 如果参数不一样，那就是一个正常的函数</span></span><br><span class="line">    <span class="comment">// 如果这么写的话，那么调用的就是MoveObject中的Move函数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 虚函数在派生类和基类中的返回值要求基本一致，但是当返回类型为类类型的指针和引用时除外</span></span><br><span class="line">    <span class="comment">// MoveObject派生除了NPCObject，那么这里可以用MoveObject或者NPCObject</span></span><br><span class="line">    <span class="comment">// 如果NPCObject类不再派生的话，后面加上final可以</span></span><br><span class="line">    <span class="function">NPCObject* <span class="title">Move1</span><span class="params">()</span>   <span class="comment">// 协变</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        x++;</span><br><span class="line">        y++;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*只要是派生类的虚函数都要加上override关键字*/</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MonsterObject</span> :<span class="keyword">public</span> MoveObject</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Move</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        x++;</span><br><span class="line">        y++;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;我是怪物\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">MonsterObject* <span class="title">Move1</span><span class="params">()</span>   <span class="comment">// 协变</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        x++;</span><br><span class="line">        y++;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这是以前的写法</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">void Move(MonsterObject* obj)</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">    obj-&gt;Move();</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">void Move(NPCObject* obj)</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">    obj-&gt;Move();</span></span><br><span class="line"><span class="comment">&#125;*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 现在多态的写法， 只写一个基类即可</span></span><br><span class="line"><span class="comment">// 调用类的对象时无法使用虚函数的，必须使用基类指针来实现虚函数的调用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这样写调用的是MoveObject中的Move</span></span><br><span class="line"><span class="comment">/*void Move(MoveObject obj)</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">    obj.Move();</span></span><br><span class="line"><span class="comment">&#125;*/</span></span><br><span class="line"><span class="comment">// 引用的本质也是个指针</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Move</span><span class="params">(MoveObject&amp; obj)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    obj.<span class="built_in">Move</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MonsterObject snake;</span><br><span class="line">    NPCObject zsf;</span><br><span class="line">    <span class="comment">// 如果没有virtual，那么就是静态绑定，什么都不会输出</span></span><br><span class="line">    <span class="comment">// 调用的是MoveObject 中的 Move函数</span></span><br><span class="line">    <span class="built_in">Move</span>(snake);</span><br><span class="line">    <span class="built_in">Move</span>(zsf);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 建议虚函数做成私有的，不破坏封装，可以通过基类指针访问</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>虚函数详解</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 虚函数详解.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MoveObject</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    <span class="type">int</span> y;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">MoveObject</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 构造函数，先构造基类再构造派生类</span></span><br><span class="line">        <span class="comment">//  派生类还没有构造，所以调用的就是MoveObject中的Move</span></span><br><span class="line">        std::cout &lt;&lt; <span class="keyword">this</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">this</span>-&gt;<span class="built_in">Move</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Move</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;MoveObject Moving~\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 相当于this-&gt;Move()</span></span><br><span class="line">        <span class="comment">// Move又是一个虚函数，所以调用的就是下面MonsterObject中的Move函数</span></span><br><span class="line">        <span class="built_in">Move</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">MoveObject</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 只能做静态绑定，调用基类中的Move函数</span></span><br><span class="line">        <span class="built_in">Move</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MonsterObject</span> :<span class="keyword">public</span> MoveObject</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Move</span><span class="params">()</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Monster Moving\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">MonsterObject</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="keyword">this</span> &lt;&lt; std::endl;</span><br><span class="line">        MoveObject::<span class="built_in">test</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">MonsterObject</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 先析构派生类  再析构基类  </span></span><br><span class="line">        <span class="built_in">Move</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 面试重点</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MonsterObject snake;</span><br><span class="line">    <span class="comment">// 调用的是Monster中的Move</span></span><br><span class="line">    snake.<span class="built_in">test</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>调用虚函数基类版本</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MoveObject::<span class="built_in">Move</span>();  <span class="comment">// 这样就能调用基类版本的Move函数了</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>默认实参在虚函数重点错误</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基类</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">AutoMove</span><span class="params">(<span class="type">int</span> step = <span class="number">2</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;auto move&quot;</span> &lt;&lt; step &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 派生类</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AutoMove</span><span class="params">(<span class="type">int</span> step = <span class="number">3</span>)</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 编译的时候已经决定了step的值,在这里改没什么用</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;~~~~~~auto move&quot;</span> &lt;&lt; step &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main()</span></span><br><span class="line">MonsterObject snake;</span><br><span class="line"></span><br><span class="line">MoveObject* p = &amp;snake;</span><br><span class="line">p-&gt;<span class="built_in">AutoMove</span>();</span><br><span class="line"><span class="comment">// 调用的是派生类的AutoMove  但是step的值在编译的时候就已经确定了，在派生类里面改是没有用的</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>释放含有虚函数的派生对象</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 虚函数详解.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MoveObject</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    <span class="type">int</span> y;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">MoveObject</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="keyword">this</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">this</span>-&gt;<span class="built_in">Move</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Move</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;MoveObject Moving~\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">AutoMove</span><span class="params">(<span class="type">int</span> step = <span class="number">2</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;auto move&quot;</span> &lt;&lt; step &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">Move</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">MoveObject</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot; Moveobj析构函数！！&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="built_in">Move</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 析构函数中没有内容的话可以换种写法</span></span><br><span class="line">    <span class="comment">// virtual ~MoveObject() = default;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MonsterObject</span> :<span class="keyword">public</span> MoveObject</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Move</span><span class="params">()</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Monster Moving\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">MonsterObject</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="keyword">this</span> &lt;&lt; std::endl;</span><br><span class="line">        MoveObject::<span class="built_in">Move</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">AutoMove</span><span class="params">(<span class="type">int</span> step = <span class="number">3</span>)</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 编译的时候已经决定了step的值,在这里改没什么用</span></span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;~~~~~~auto move&quot;</span> &lt;&lt; step &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">MonsterObject</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot; Monsterobj析构函数！！&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="built_in">Move</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 面试重点</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// MonsterObject snake;</span></span><br><span class="line"></span><br><span class="line">    MoveObject* p = <span class="keyword">new</span> <span class="built_in">MonsterObject</span>();</span><br><span class="line">    p-&gt;<span class="built_in">AutoMove</span>();</span><br><span class="line">    <span class="keyword">delete</span> p; <span class="comment">// 触发析构函数，先析构派生类再析构基类</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 析构函数不是虚函数，所以调用MoveObject中的析构函数</span></span><br><span class="line">    <span class="comment">//p-&gt;~MoveObject()</span></span><br><span class="line">    <span class="comment">// 但是没有释放内存，造成内存泄露，所以做一个虚析构函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在类里面，析构函数和构造函数是静态绑定，其余都是动态绑定的。</p>
+<p><strong>对象多态详解</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 33对象多态详解.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MoveObject</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*virtual*/</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MonsterObject</span> :<span class="keyword">public</span> MoveObject</span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NPCObject</span> :<span class="keyword">public</span> MoveObject</span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span> :<span class="keyword">public</span> MonsterObject</span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span> :<span class="keyword">public</span> MonsterObject</span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WolfMan</span> :<span class="keyword">public</span> Wolf,<span class="keyword">public</span> MoveObject,<span class="keyword">public</span> Man</span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MonsterObject monster;</span><br><span class="line">    MoveObject* _move = &amp;monster;  <span class="comment">// 隐式类型转换，向上转型</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// _move = new MoveObject();</span></span><br><span class="line">    <span class="comment">// 编译器不确定_pmonster指向的是什么</span></span><br><span class="line">    <span class="comment">// MonsterObject* _pmonster = _move; // 隐式类型转换不被允许  向下转型不允许</span></span><br><span class="line">    <span class="comment">//可以强制，但是基类得是可以访问的才行</span></span><br><span class="line">    MonsterObject* _pmonster = (MonsterObject*)_move; <span class="comment">// 强制类型转换  向下转换</span></span><br><span class="line">    MonsterObject* _pmonsterA = <span class="built_in">static_cast</span>&lt;MonsterObject*&gt;(_move); <span class="comment">// 静态强制类型转换</span></span><br><span class="line">    <span class="comment">// 虚基类不能强制转换，类是虚拟的</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*------------------------------------------------------------*/</span></span><br><span class="line"></span><br><span class="line">    WolfMan wolfman;</span><br><span class="line"></span><br><span class="line">    <span class="type">void</span>* ptr = &amp;wolfman;</span><br><span class="line">    Wolf* pwlf = &amp;wolfman;</span><br><span class="line">    <span class="comment">// Man* pman = &amp;wolfman;</span></span><br><span class="line">    <span class="comment">// 存在类型转换</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;ptr: &quot;</span> &lt;&lt; ptr &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;pwlf: &quot;</span> &lt;&lt; pwlf &lt;&lt; std::endl;</span><br><span class="line">    <span class="comment">//std::cout &lt;&lt; &quot;pman: &quot; &lt;&lt; pman &lt;&lt; std::endl;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;----------------------&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    <span class="type">void</span>* ptr1 = &amp;wolfman;</span><br><span class="line">    Wolf* pwlf1 = (Wolf*)ptr1;  <span class="comment">// void* =&gt; Wolf*</span></span><br><span class="line">    <span class="comment">//Man* pman1 = (Man*)ptr1;  // 指针   类型 和内存地址</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;ptr1: &quot;</span> &lt;&lt; ptr1 &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;pwlf1: &quot;</span> &lt;&lt; pwlf1 &lt;&lt; std::endl;</span><br><span class="line">    <span class="comment">//std::cout &lt;&lt; &quot;pman1: &quot; &lt;&lt; pman1 &lt;&lt; std::endl;</span></span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;----------------------&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    <span class="type">void</span>* ptr2 = &amp;wolfman;</span><br><span class="line">    Wolf* pwlf2 = (Wolf*)&amp;wolfman;  <span class="comment">// void* =&gt; Wolf*  Wolfman*=&gt;Wolf</span></span><br><span class="line">    <span class="comment">//Man* pman2 = (Man*)&amp;wolfman;    // 类型</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;ptr2: &quot;</span> &lt;&lt; ptr2 &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;pwlf2: &quot;</span> &lt;&lt; pwlf2 &lt;&lt; std::endl;</span><br><span class="line">    <span class="comment">//std::cout &lt;&lt; &quot;pman2: &quot; &lt;&lt; pman2 &lt;&lt; std::endl;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//_move = &amp;wolfman; // 多重继承  编译器不知道怎么转，尽量避免多重继承</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;----------------------&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    WolfMan wolfman1;</span><br><span class="line">    wolfman<span class="number">1.</span>::Wolf::MonsterObject::MoveObject::x = <span class="number">2500</span>;</span><br><span class="line">    wolfman<span class="number">1.</span>::MoveObject::x = <span class="number">3500</span>;</span><br><span class="line">    MoveObject* _move1 = <span class="built_in">static_cast</span>&lt;MoveObject*&gt;(&amp;wolfman1);</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; _move1-&gt;x &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>强制类型转换都是有风险的！！！</p>
+<p><strong>动态强制转换</strong></p>
+<p><img src="https://bu.dusays.com/2024/12/08/67555d8e3fb89.png"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 33对象多态详解.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MoveObject</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Move</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//if (dynamic_cast&lt;MonsterObject*&gt;(this))</span></span><br><span class="line">        <span class="comment">// 不推荐写法，非常依赖派生类</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*virtual*/</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MonsterObject</span> :<span class="keyword">public</span> MoveObject</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Move</span><span class="params">()</span> </span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NPCObject</span> :<span class="keyword">public</span> MoveObject</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Move</span><span class="params">()</span> </span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span> :<span class="keyword">public</span> MonsterObject</span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span> :<span class="keyword">public</span> MonsterObject</span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">boss</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WolfMan</span> : <span class="keyword">public</span> Man<span class="comment">//,public boss</span></span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 无论 向上转还是向下转，推荐无损转，使用指针或者引用来转</span></span><br><span class="line">    MonsterObject monster;</span><br><span class="line">    MoveObject* _move =(MoveObject*)&amp;monster;</span><br><span class="line">    MoveObject&amp; lMove = monster;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//_move = new MoveObject();</span></span><br><span class="line">    <span class="comment">//MonsterObject* _pmonsterA = dynamic_cast&lt;MonsterObject*&gt;(_move);</span></span><br><span class="line">    <span class="comment">//auto _pmonsterA = dynamic_cast&lt;MonsterObject*&gt;(_move);</span></span><br><span class="line">    <span class="comment">//MonsterObject和NPCObject之间没有继承关系，_move不能被转换为NPCObject*。</span></span><br><span class="line">    <span class="comment">//auto _pmonsterB = dynamic_cast&lt;NPCObject*&gt;(_move);</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//if (_pmonsterA != nullptr) _pmonsterA-&gt;MonsterMove();</span></span><br><span class="line">    <span class="comment">//if (_pmonsterB != nullptr) _pmonsterB-&gt;NPCMove();</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 直接这样使用就可以了，避免过度使用 dynamic_cast</span></span><br><span class="line">    <span class="comment">//_move-&gt;Move();</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不应该转换  没有空引用 </span></span><br><span class="line">    <span class="comment">//NPCObject&amp; lNPC = dynamic_cast&lt;NPCObject&amp;&gt;(monster);</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//没有关系的类转换   跨类转换</span></span><br><span class="line">    WolfMan wlfman;</span><br><span class="line">    MoveObject* pMove = &amp;wlfman;</span><br><span class="line">    <span class="keyword">auto</span> p = <span class="built_in">dynamic_cast</span>&lt;WolfMan*&gt;(pMove);</span><br><span class="line">    <span class="keyword">auto</span> p1 = <span class="built_in">dynamic_cast</span>&lt;boss*&gt;(pMove);</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;p: &quot;</span> &lt;&lt; p &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;p1: &quot;</span> &lt;&lt; p1 &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>抽象类</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 拥有纯虚函数的类称为抽象类，因为该类的函数没有实现，因此不能创建抽象类的实例</span></span><br><span class="line"><span class="comment">// 但是可以使用抽象类的指针和引用作为返回或参数！！</span></span><br><span class="line"><span class="comment">// 抽象类的构造函数因为不能实际使用，所以一般推荐把抽象类的构造函数定义为protected</span></span><br><span class="line"><span class="comment">// 抽象类的派生类如果没有定义纯虚函数，则该派生类依然是抽象类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">Move</span><span class="params">()</span> </span>= <span class="number">0</span>;  <span class="comment">// 这个虚函数没什么实际内容，就设计成纯虚函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">fly</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">Notice</span><span class="params">()</span> </span>= <span class="number">0</span>;  <span class="comment">// 发送通知</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">Eat</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 一个类里面都是纯虚函数，没有提供具体内容，这就是接口类</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">Animal</span>() &#123;&#125;  <span class="comment">// 抽象类的构造函数因为不能实际使用，所以一般推荐把抽象类的构造函数定义为protected</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> :<span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">Move</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这里没有fly函数的，所以这个类也是抽象类</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> :<span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">Move</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//Animal GetAnm() &#123; &#125;  不能创建实体</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 拥有纯虚函数的类称为抽象类，因为该类的函数没有实现，因此不能创建抽象类的实例</span></span><br><span class="line">    <span class="comment">//Animal anm;</span></span><br><span class="line">    <span class="comment">//Animal* anm1 = new Cat(); // 指针可以，实体不行</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>类的成员函数的指针</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 类的成员函数的函数指针.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里限定了类Wolf</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span>;</span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span> <span class="params">(Wolf::* PGROUP)</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">Count</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Wolf</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        pGroup = &amp;Wolf::Group0;</span><br><span class="line">        (<span class="keyword">this</span>-&gt;*pGroup)();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Group0</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;一阶段！！！&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Group1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;二阶段！！！&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Group2</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;三阶段！！！&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    PGROUP pGroup;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(*COUNT)</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PGROUP pFunction = &amp;Wolf::Group2;</span><br><span class="line">    Wolf* pWolf = <span class="keyword">new</span> <span class="built_in">Wolf</span>();</span><br><span class="line">    (pWolf-&gt;*pFunction)();  <span class="comment">// 成员函数的函数指针</span></span><br><span class="line"></span><br><span class="line">    COUNT _count = &amp;Wolf::Count;</span><br><span class="line">    _count();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span>; <span class="comment">// 类的前置声明</span></span><br><span class="line"><span class="comment">// 定义了一个新类型PGROUP，它是指向Wolf类的成员函数指针，指向的成员函数没有参数且返回类型为void</span></span><br><span class="line"><span class="comment">// PGROUP 是一个类型别名，用于指向Wolf类中没有参数且返回类型为void的成员函数。</span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span> <span class="params">(Wolf::* PGROUP)</span><span class="params">()</span></span>;  </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Wolf</span>()</span><br><span class="line">&#123;</span><br><span class="line">    pGroup = &amp;Wolf::Group0;  <span class="comment">// 构造函数中初始化pGroup</span></span><br><span class="line">    (<span class="keyword">this</span>-&gt;*pGroup)();        <span class="comment">// 调用pGroup指向的成员函数</span></span><br><span class="line">    PGROUP pGroup;  <span class="comment">// 成员函数指针，指向Wolf类的成员函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// COUNT是一个类型别名，用于定义指向没有参数且返回类型为void 普通函数的指针</span></span><br><span class="line"><span class="comment">// COUNT 是一个指向无参数无返回值函数的指针。</span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(*COUNT)</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main函数</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PGROUP pFunction = &amp;Wolf::Group2;  <span class="comment">// 定义一个成员函数指针，指向Group2</span></span><br><span class="line">    Wolf* pWolf = <span class="keyword">new</span> <span class="built_in">Wolf</span>();  <span class="comment">// 创建一个Wolf对象（会调用构造函数）</span></span><br><span class="line">    (pWolf-&gt;*pFunction)();  <span class="comment">// 通过成员函数指针调用Group2</span></span><br><span class="line"></span><br><span class="line">    COUNT _count = &amp;Wolf::Count;  <span class="comment">// 定义一个普通函数指针，指向静态成员函数Count</span></span><br><span class="line">    _count();  <span class="comment">// 调用静态成员函数Count</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>成员函数指针：指向类成员函数时，需要使用::*语法并制定类名。在调用的时候，必须通过类实例（this指针）来调用。</p>
+<p>静态成员函数：静态成员函数不依赖于对象实例，可以像普通函数一样直接通过类名或函数指针调用。</p>
+<p>成员函数与普通函数指针的不同：成员函数指针需要对象实例来调用，而普通函数指针则不需要。</p>
+<p><strong>多态：虚函数的实现</strong></p>
+<p>（面试可能问到）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ConsoleApplication1.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Hack</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;劫持了！！！1&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AIM</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> HP;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Eat</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;AIM&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Die</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;AIM_die&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span> :<span class="keyword">public</span> AIM</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Eat</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Wolf&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Die</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;WOLF-DIE&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Sound</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;aoaoaoaoa~~~~&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AIM* wolf = <span class="keyword">new</span> <span class="built_in">Wolf</span>();</span><br><span class="line">    wolf-&gt;<span class="built_in">Die</span>(); <span class="comment">// 调用的是Wolf类中的函数</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 输出8   多了4个字节</span></span><br><span class="line">    std::cout &lt;&lt; <span class="built_in">sizeof</span>(AIM) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试下多出的四个字节是头部还是尾部</span></span><br><span class="line">    std::cout &lt;&lt; wolf &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; &amp;wolf-&gt;HP &lt;&lt; std::endl; <span class="comment">// 加在头部了</span></span><br><span class="line"></span><br><span class="line">    <span class="type">unsigned</span>* vtable = (<span class="type">unsigned</span>*)wolf;</span><br><span class="line">    std::cout &lt;&lt; std::hex &lt;&lt; <span class="string">&quot;Vtable:  &quot;</span> &lt;&lt; vtable[<span class="number">0</span>] &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">unsigned</span>* func = (<span class="type">unsigned</span>*)vtable[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; std::hex &lt;&lt; <span class="string">&quot;eat: &quot;</span> &lt;&lt; func[<span class="number">0</span>] &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; std::hex &lt;&lt; <span class="string">&quot;die: &quot;</span> &lt;&lt; func[<span class="number">1</span>] &lt;&lt; std::endl;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 通过修改虚函数表的数据可以实现劫持</span></span><br><span class="line">    DWORD old;</span><br><span class="line">    <span class="built_in">VirtualProtect</span>(func, <span class="number">8</span>, PAGE_EXECUTE_READWRITE, &amp;old);</span><br><span class="line">    func[<span class="number">0</span>] = (<span class="type">unsigned</span>)Hack;</span><br><span class="line">    func[<span class="number">1</span>] = (<span class="type">unsigned</span>)Hack;</span><br><span class="line">    wolf-&gt;<span class="built_in">Eat</span>();</span><br><span class="line">    <span class="comment">// 以上只是影响的Wolf类  </span></span><br><span class="line"></span><br><span class="line">    AIM* _aim = <span class="keyword">new</span> <span class="built_in">AIM</span>();</span><br><span class="line">    _aim-&gt;<span class="built_in">Eat</span>();</span><br><span class="line"></span><br><span class="line">    AIM* _aim1 = <span class="keyword">new</span> <span class="built_in">Wolf</span>();</span><br><span class="line">    _aim1-&gt;<span class="built_in">Eat</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 只有通过指针访问函数才会调用虚函数表</span></span><br><span class="line">    Wolf wl;</span><br><span class="line">    wl.<span class="built_in">Sound</span>();  <span class="comment">// 这个不涉及指针，能够调用我们想要的函数</span></span><br><span class="line">    wl.<span class="built_in">Eat</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bu.dusays.com/2024/12/09/67568e837d723.png"></p>
+<p> 虚表的性质</p>
+<p>1️⃣ 同一个类的多个实例都指向同一个虚函数表</p>
+<p>2️⃣ 通过修改虚函数表的数据可以实现劫持</p>
+<p>3️⃣ 只有通过指针访问函数才会调用虚函数表</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="tag"># 学习记录</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/12/11/Cplusplus10%E7%BB%A7%E6%89%BF/" rel="prev" title="Cplusplus10继承">
+      <i class="fa fa-chevron-left"></i> Cplusplus10继承
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/12/11/Cplusplus12%E8%B7%A8%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B/" rel="next" title="Cplusplus12跨语言编程">
+      Cplusplus12跨语言编程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+	
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="如河"
+      src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+  <p class="site-author-name" itemprop="name">如河</p>
+  <div class="site-description" itemprop="description">一起学习 超越情绪 变得更强</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bornleader10" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bornleader10" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:a1453323218@gmail.com" title="E-Mail → mailto:a1453323218@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">如河</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
