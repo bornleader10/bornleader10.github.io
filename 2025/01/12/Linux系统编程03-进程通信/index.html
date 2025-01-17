@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bornleader10.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="进程通信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统编程03-进程通信">
+<meta property="og:url" content="https://bornleader10.github.io/2025/01/12/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B03-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/index.html">
+<meta property="og:site_name" content="暮色回想">
+<meta property="og:description" content="进程通信">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bu.dusays.com/2025/01/12/6783c9daa4ad9.png">
+<meta property="og:image" content="https://bu.dusays.com/2025/01/12/6783d16c0a2b6.png">
+<meta property="article:published_time" content="2025-01-12T13:35:10.000Z">
+<meta property="article:modified_time" content="2025-01-15T12:18:10.994Z">
+<meta property="article:author" content="如河">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bu.dusays.com/2025/01/12/6783c9daa4ad9.png">
+
+<link rel="canonical" href="https://bornleader10.github.io/2025/01/12/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B03-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux系统编程03-进程通信 | 暮色回想</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">暮色回想</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">超越情绪 变得更强</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-comment fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bornleader10.github.io/2025/01/12/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B03-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+      <meta itemprop="name" content="如河">
+      <meta itemprop="description" content="一起学习 超越情绪 变得更强">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暮色回想">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux系统编程03-进程通信
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+			<span class="post-time">
+  &nbsp; |
+<span class="post-meta-item-icon">
+  <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">字数统计:</span>
+<span class="post-count">2.8k(字)</span>
+</span>
+
+<span class="post-time">
+  &nbsp; | 
+<span class="post-meta-item-icon">
+<i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">阅读时长≈</span>
+<span class="post-count">12(分)</span>
+&nbsp; | 
+</span>
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-12 21:35:10" itemprop="dateCreated datePublished" datetime="2025-01-12T21:35:10+08:00">2025-01-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-01-15 20:18:10" itemprop="dateModified" datetime="2025-01-15T20:18:10+08:00">2025-01-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">Linux系统编程</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">进程通信</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>进程通信：为了方便进程交换信息，在内核提供缓冲区进行数据交换的机制。</strong></p>
+<p>交换数据时基于开发 &#x2F; 权限 的</p>
+<p>缓冲区两边像是有俩齿轮一样，如果是比作商店的话，一边是放进去东西，一边是拿出去东西，形成了消息处理的流水线。</p>
+<h4 id="进程间通信：管道"><a href="#进程间通信：管道" class="headerlink" title="进程间通信：管道"></a>进程间通信：管道</h4><p><strong>单管道</strong></p>
+<p><img src="https://bu.dusays.com/2025/01/12/6783c9daa4ad9.png"></p>
+<p>为了完成进程间通信，需要创建管道。管道并非属于进程的资源，而是和套接字一样，属于操作系统（也就不是fork函数的复制对象）。所以，两个进程通过操作系统提供的内存空间进行通信。</p>
+<p>父进程调用该函数时将<strong>创建管道</strong>，同时获取对应于出入口的文件描述符号</p>
+<p><code>Filedes[0]</code> 通过管道接收数据时使用的文件描述符，即管道出口。</p>
+<p><code>Fledes[1]</code> 通过管道传输数据时使用的文件描述符，即管道入口。</p>
+<p>父进程创建子进程的时候，自己的资源镜像复制到子进程里面，所以父进程创建了管道子进程是有这个信息的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">singlePipe</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 两个文件描述符</span></span><br><span class="line">	<span class="type">int</span> fds[<span class="number">2</span>] = &#123; <span class="number">-1</span>,<span class="number">-1</span> &#125;;</span><br><span class="line">	<span class="type">char</span> str[<span class="number">128</span>] = <span class="string">&quot;send by sub process!!!\n&quot;</span>;</span><br><span class="line">	<span class="type">char</span> buf[<span class="number">128</span>] = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="built_in">pipe</span>(fds);</span><br><span class="line">	<span class="type">pid_t</span> pid = fork();</span><br><span class="line">	<span class="keyword">if</span> (pid == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">write</span>(fds[<span class="number">1</span>], str, <span class="built_in">sizeof</span>(str));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="built_in">read</span>(fds[<span class="number">0</span>], buf, <span class="built_in">sizeof</span>(buf));</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d): %s server: %s\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, buf);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>双管道</strong></p>
+<p>1个管道无法完成双向通信任务，有时候需要创建2个管道，各自负责不同的数据流动即可。</p>
+<p><img src="https://bu.dusays.com/2025/01/12/6783d16c0a2b6.png"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">doublePipe</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 两个方向各有俩文件描述符</span></span><br><span class="line">	<span class="type">int</span> s2c[<span class="number">2</span>], c2s[<span class="number">2</span>];</span><br><span class="line">	<span class="built_in">pipe</span>(s2c);</span><br><span class="line">	<span class="built_in">pipe</span>(c2s);</span><br><span class="line">	<span class="type">pid_t</span> pid = fork();</span><br><span class="line">	<span class="keyword">if</span> (pid == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">char</span> buffer[<span class="number">256</span>] = <span class="string">&quot;&quot;</span>;</span><br><span class="line">		<span class="built_in">write</span>(c2s[<span class="number">1</span>], <span class="string">&quot;hello,i am subprocess!\n&quot;</span>, <span class="number">23</span>);</span><br><span class="line">		<span class="built_in">read</span>(s2c[<span class="number">0</span>], buffer, <span class="built_in">sizeof</span>(buffer));</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d): %s server: %s\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, buffer);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="type">char</span> buffer[<span class="number">256</span>] = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">read</span>(c2s[<span class="number">0</span>], buffer, <span class="built_in">sizeof</span>(buffer));</span><br><span class="line">		<span class="built_in">write</span>(s2c[<span class="number">1</span>], <span class="string">&quot;hello,i am mainprocess\n&quot;</span>, <span class="number">23</span>);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d): %s server: %s\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, buffer);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%s(%d): %s server: %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, <span class="built_in">getpid</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="进程间通信：FIFO"><a href="#进程间通信：FIFO" class="headerlink" title="进程间通信：FIFO"></a>进程间通信：FIFO</h4><p>​	对比pipe管道，他已经可以完成在两个进程之间通信的任务，不过它似乎完成的不够好，也可以说是不够彻底。它只能在两个有<strong>亲戚关系</strong>的进程之间进行通信，这就大大限制了pipe管道的应用范围。</p>
+<p>​	<code>fifo</code>管道的本质是操作系统中的命名文件，当然Linux的理念就是万物皆文件，它在操作系统中以命名文件的形式存在，我们可以在操作系统中看见<code>fifo</code>管道，在你有权限的情况下，甚至可以读写他们。</p>
+<p>内核会针对<code>fifo</code>文件开辟一个缓冲区，操作FIFO文件，可以操作缓冲区，实现进程通信。一旦使用<code>mkfifo</code>创建了一个FIFO，就可以使用open打开它，常见的文件IO函数都可以用于<code>FIFO</code>。如：<code>close</code>、<code>read</code>、<code>write</code>、<code>unlink</code>等 .</p>
+<p>这样的话  一个进程对应一个管道，大大减少了管道的数量。</p>
+<p><strong>打开FIFO文件的时候，read端会阻塞等待write端打开open，write端同理，也会阻塞等待另外一端打开。</strong></p>
+<h4 id="进程间通信：共享内存"><a href="#进程间通信：共享内存" class="headerlink" title="进程间通信：共享内存"></a>进程间通信：共享内存</h4><p>共享内存允许不同进程之间<strong>共享同一段逻辑内存</strong>，对于这段内存，它们都能访问，或者修改它，没有任何限制。所以它是<strong>进程间传递大量数据</strong>的一种非常有效的方式。“共享内存允许不同进程之间共享同一段逻辑内存”，这里是逻辑内存。也就是说共享内存的进程访问的可以不是同一段物理内存，这个没有明确的规定，但是大多数的系统实现都将进程之间的共享内存安排为同一段物理内存。</p>
+<p><strong>使用共享内存的步骤通常是：</strong></p>
+<p>1）创建或获取一段共享内存；</p>
+<p>2）将上一步创建的共享内存映射到该进程的地址空间；</p>
+<p>3）访问共享内存；</p>
+<p>4）将共享内存从当前的进程地址空间分离；</p>
+<p>5）删除这段共享内存；</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">lession90</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">pid_t</span> pid = fork();</span><br><span class="line">	<span class="keyword">if</span> (pid &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// . 表明当前的路径 </span></span><br><span class="line">		<span class="comment">//  ftok(&quot;.&quot;,1)文件目录不一样   后面的数字也不一样 </span></span><br><span class="line">		<span class="type">int</span> shm_id = <span class="built_in">shmget</span>(<span class="built_in">ftok</span>(<span class="string">&quot;.&quot;</span>,<span class="number">1</span>), <span class="built_in">sizeof</span>(STUDENT), IPC_CREAT | <span class="number">0666</span>);</span><br><span class="line">		<span class="keyword">if</span> (shm_id == <span class="number">-1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%s(%d): %s create share memeory failed!\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 使用函数shmat()来映射共享内存</span></span><br><span class="line">		PSTUDENT pStu = (PSTUDENT)<span class="built_in">shmat</span>(shm_id, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">		pStu-&gt;id = <span class="number">666666</span>;</span><br><span class="line">		<span class="built_in">strcpy</span>(pStu-&gt;name, <span class="string">&quot;买买提&quot;</span>);</span><br><span class="line">		pStu-&gt;age = <span class="number">18</span>;</span><br><span class="line">		pStu-&gt;sex = <span class="literal">true</span>;</span><br><span class="line">		pStu-&gt;sig = <span class="number">99</span>;</span><br><span class="line">		<span class="comment">// 两边需要同步   不同步直接删除映射就拿不到数据</span></span><br><span class="line">		<span class="keyword">while</span> (pStu-&gt;sig == <span class="number">99</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">usleep</span>(<span class="number">1000</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 删除映射</span></span><br><span class="line">		<span class="built_in">shmdt</span>(pStu);</span><br><span class="line">		<span class="built_in">shmctl</span>(shm_id, IPC_RMID, <span class="literal">NULL</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123; <span class="comment">// 子进程</span></span><br><span class="line">		<span class="built_in">usleep</span>(<span class="number">500000</span>); <span class="comment">// 等待父进程写入</span></span><br><span class="line">		<span class="type">int</span> shm_id = <span class="built_in">shmget</span>(<span class="built_in">ftok</span>(<span class="string">&quot;.&quot;</span>, <span class="number">1</span>), <span class="built_in">sizeof</span>(STUDENT), IPC_CREAT | <span class="number">0666</span>);</span><br><span class="line">		<span class="keyword">if</span> (shm_id == <span class="number">-1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%s(%d): %s create share memeory failed!\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 使用函数shmat()来映射共享内存</span></span><br><span class="line">		PSTUDENT pStu = (PSTUDENT)<span class="built_in">shmat</span>(shm_id, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">while</span> (pStu-&gt;sig != <span class="number">99</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">usleep</span>(<span class="number">1000</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d, %s,%d,%s\n&quot;</span>, pStu-&gt;id, pStu-&gt;name, pStu-&gt;age, pStu-&gt;sex ? <span class="string">&quot;男&quot;</span> : <span class="string">&quot;女&quot;</span>);</span><br><span class="line">		pStu-&gt;sig = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">shmdt</span>(pStu);</span><br><span class="line">		<span class="built_in">shmctl</span>(shm_id, IPC_RMID, <span class="literal">NULL</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="进程间通信：信号量"><a href="#进程间通信：信号量" class="headerlink" title="进程间通信：信号量"></a>进程间通信：信号量</h4><ul>
+<li>假设没有信号量，父子进程可能会同时访问共享内存，导致数据不一致。例如，父进程可能正在写入数据，而子进程同时尝试读取尚未完全写入的数据。通过信号量的 P 操作（<code>semop</code>函数，<code>sem_op</code>为 - 1）和 V 操作（<code>semop</code>函数，<code>sem_op</code>为 1），可以确保在某一时刻只有一个进程能够访问共享内存中的关键区域。比如，子进程在读取共享内存中的学生信息之前，先对信号量进行 P 操作，等待父进程完成写入并执行 V 操作释放资源后，子进程才能读取，从而避免了数据竞争和不一致性。</li>
+</ul>
+<p>原来共享内存有很严重的时间差，降低了效率。</p>
+<p>为了防止出现因多个程序同时访问一个共享资源而引发的一系列问题，我们需要一种方法，它可以通过生成并使用令牌来授权，在任一时刻只能有一个执行线程访问代码的临界区域。临界区域是指执行数据更新的代码需要独占式地执行。而信号量就可以提供这样的一种访问机制，让一个临界区同一时间只有一个线程在访问它，也就是说信号量是用来调协进程对共享资源的访问的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">lession91</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">pid_t</span> pid = fork();</span><br><span class="line">	<span class="keyword">if</span> (pid &gt; <span class="number">0</span>) &#123;<span class="comment">//父进程</span></span><br><span class="line">		<span class="comment">// 使用ftok函数生成一个唯一的键值key，用于创建信号量。</span></span><br><span class="line">		<span class="type">key_t</span> key = <span class="built_in">ftok</span>(<span class="string">&quot;.&quot;</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// semget函数创建一个信号量集，包含 2 个信号量，权限为0666。</span></span><br><span class="line">		<span class="type">int</span> sem_id = <span class="built_in">semget</span>(key, <span class="number">2</span>, IPC_CREAT | <span class="number">0666</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//使用semctl函数初始化两个信号量的值为 0。</span></span><br><span class="line">		<span class="built_in">semctl</span>(sem_id, <span class="number">0</span>, SETVAL, <span class="number">0</span>);</span><br><span class="line">		<span class="built_in">semctl</span>(sem_id, <span class="number">1</span>, SETVAL, <span class="number">0</span>);</span><br><span class="line">		<span class="comment">//调用shmget函数创建一个共享内存段，大小为sizeof(STUDENT)，权限为0666。</span></span><br><span class="line">		<span class="type">int</span> shm_id = <span class="built_in">shmget</span>(<span class="built_in">ftok</span>(<span class="string">&quot;.&quot;</span>, <span class="number">1</span>), <span class="built_in">sizeof</span>(STUDENT), IPC_CREAT | <span class="number">0666</span>);</span><br><span class="line">		<span class="keyword">if</span> (shm_id == <span class="number">-1</span>) &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s create share memeory failed!\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//将共享内存段附加到进程的地址空间，返回一个指向共享内存的指针pStu。</span></span><br><span class="line">		<span class="comment">//映射</span></span><br><span class="line">		PSTUDENT pStu = (PSTUDENT)<span class="built_in">shmat</span>(shm_id, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">		pStu-&gt;id = <span class="number">666666</span>;</span><br><span class="line">		<span class="built_in">strcpy</span>(pStu-&gt;name, <span class="string">&quot;abcdefghijklmn&quot;</span>);</span><br><span class="line">		pStu-&gt;age = <span class="number">18</span>;</span><br><span class="line">		pStu-&gt;sex = <span class="literal">true</span>;</span><br><span class="line">		<span class="comment">//信号量</span></span><br><span class="line">		sembuf sop = &#123;</span><br><span class="line">			.sem_num = <span class="number">0</span>,</span><br><span class="line">			.sem_op = <span class="number">1</span>  <span class="comment">// 为正数，semop就是V操作</span></span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 获取信号量的值，</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, <span class="built_in">semctl</span>(sem_id, <span class="number">0</span>, GETVAL));</span><br><span class="line">		<span class="built_in">semop</span>(sem_id, &amp;sop, <span class="number">1</span>);<span class="comment">//V操作</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, <span class="built_in">semctl</span>(sem_id, <span class="number">0</span>, GETVAL));</span><br><span class="line">		sop.sem_num = <span class="number">1</span>;</span><br><span class="line">		sop.sem_op = <span class="number">-1</span>;  <span class="comment">// 为负数，semop为P操作</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, <span class="built_in">semctl</span>(sem_id, <span class="number">1</span>, GETVAL));</span><br><span class="line">		<span class="built_in">semop</span>(sem_id, &amp;sop, <span class="number">1</span>);<span class="comment">//P操作</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, <span class="built_in">semctl</span>(sem_id, <span class="number">1</span>, GETVAL));</span><br><span class="line"></span><br><span class="line">		<span class="comment">//将共享内存段从进程的地址空间分离</span></span><br><span class="line">		<span class="built_in">shmdt</span>(pStu);</span><br><span class="line">		<span class="comment">//删除共享内存段。</span></span><br><span class="line">		<span class="built_in">shmctl</span>(shm_id, IPC_RMID, <span class="literal">NULL</span>);</span><br><span class="line">		<span class="comment">//删除信号量</span></span><br><span class="line">		<span class="built_in">semctl</span>(sem_id, <span class="number">0</span>, IPC_RMID);</span><br><span class="line">		<span class="built_in">semctl</span>(sem_id, <span class="number">1</span>, IPC_RMID);</span><br><span class="line">		<span class="built_in">sleep</span>(<span class="number">10</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;<span class="comment">//子进程</span></span><br><span class="line">		<span class="type">key_t</span> key = <span class="built_in">ftok</span>(<span class="string">&quot;.&quot;</span>, <span class="number">2</span>);</span><br><span class="line">		<span class="comment">//semget和shmget函数获取已存在的信号量和共享内存段。</span></span><br><span class="line">		<span class="type">int</span> sem_id = <span class="built_in">semget</span>(key, <span class="number">2</span>, IPC_CREAT);</span><br><span class="line">		<span class="type">int</span> shm_id = <span class="built_in">shmget</span>(<span class="built_in">ftok</span>(<span class="string">&quot;.&quot;</span>, <span class="number">1</span>), <span class="built_in">sizeof</span>(STUDENT), IPC_CREAT | <span class="number">0666</span>);</span><br><span class="line">		<span class="keyword">if</span> (shm_id == <span class="number">-1</span>) &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s create share memeory failed!\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		sembuf sop = &#123;</span><br><span class="line">			.sem_num = <span class="number">0</span>,</span><br><span class="line">			.sem_op = <span class="number">-1</span><span class="comment">//P操作</span></span><br><span class="line">		&#125;;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, <span class="built_in">semctl</span>(sem_id, <span class="number">0</span>, GETVAL));</span><br><span class="line">		<span class="built_in">semop</span>(sem_id, &amp;sop, <span class="number">1</span>);<span class="comment">//P操作</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, <span class="built_in">semctl</span>(sem_id, <span class="number">0</span>, GETVAL));</span><br><span class="line">		PSTUDENT pStu = (PSTUDENT)<span class="built_in">shmat</span>(shm_id, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">		<span class="comment">//信号量</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d ,%s,%d,%s\n&quot;</span>, pStu-&gt;id, pStu-&gt;name, pStu-&gt;age, pStu-&gt;sex ? <span class="string">&quot;male&quot;</span> : <span class="string">&quot;female&quot;</span>);</span><br><span class="line">		sop.sem_num = <span class="number">1</span>;</span><br><span class="line">		sop.sem_op = <span class="number">1</span>;<span class="comment">//V操作</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, <span class="built_in">semctl</span>(sem_id, <span class="number">1</span>, GETVAL));</span><br><span class="line">		<span class="built_in">semop</span>(sem_id, &amp;sop, <span class="number">1</span>);<span class="comment">//V操作</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, <span class="built_in">semctl</span>(sem_id, <span class="number">1</span>, GETVAL));</span><br><span class="line">		<span class="built_in">sleep</span>(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//共享内存段分离</span></span><br><span class="line">		<span class="built_in">shmdt</span>(pStu);</span><br><span class="line">		<span class="built_in">shmctl</span>(shm_id, IPC_RMID, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="进程间通信：消息队列"><a href="#进程间通信：消息队列" class="headerlink" title="进程间通信：消息队列"></a>进程间通信：消息队列</h4><p><strong>消息队列</strong>提供了一种从一个进程向另一个进程发送一个数据块的方法。 每个数据块都被认为含有一个类型，接收进程可以独立地接收含有不同类型的数据结构。我们可以通过发送消息来避免命名管道的同步和阻塞问题。但是消息队列与命名管道FIFO一样，每个数据块都有一个最大长度的限制。</p>
+<p>1️⃣ <code>msgget</code>函数  创建和访问一个消息队列   在示例中，子进程和父进程都有</p>
+<p>2️⃣ <code>msgsnd</code>函数  用来把消息添加到队列</p>
+<p>3️⃣ <code>msgrcv</code>函数  用来从一个消息队列获取消息</p>
+<p>4️⃣ <code>msgctl</code> 函数 用来控制消息队列，它与共享内存的<code>shmctl</code>函数类似，删除消息队列</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">lession92</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">pid_t</span> pid = fork();</span><br><span class="line">	<span class="keyword">if</span> (pid &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// msg 的接受</span></span><br><span class="line">		<span class="comment">// 有的linux系统无法实现</span></span><br><span class="line">		<span class="type">int</span> msg_id = <span class="built_in">msgget</span>(<span class="built_in">ftok</span>(<span class="string">&quot;.&quot;</span>, <span class="number">3</span>), IPC_CREAT | <span class="number">0666</span>);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s %d %d\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__, msg_id, errno);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, <span class="built_in">strerror</span>(errno));</span><br><span class="line">		<span class="keyword">if</span> (msg_id == <span class="number">-1</span>) <span class="keyword">return</span>;</span><br><span class="line">		MSG msg;</span><br><span class="line">		<span class="built_in">memset</span>(&amp;msg, <span class="number">0</span>, <span class="built_in">sizeof</span>(msg));</span><br><span class="line">		<span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">//msgrcv 函数的参数依次为：消息队列 ID、接收消息的缓冲区、消息数据部分的大小、期望接收的消息类型（这里为 1）、接收标志（这里为 0）。</span></span><br><span class="line">			<span class="type">ssize_t</span> ret = <span class="built_in">msgrcv</span>(msg_id, &amp;msg, <span class="built_in">sizeof</span>(msg.data), <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">			<span class="keyword">if</span> (ret == <span class="number">-1</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">usleep</span>(<span class="number">1000</span>);</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d name: %s age: %d msg: %s\n&quot;</span>,</span><br><span class="line">			msg.data.id, msg.data.name, msg.data.age, msg.data.message);</span><br><span class="line">		<span class="built_in">getchar</span>();</span><br><span class="line">		<span class="built_in">msgctl</span>(msg_id, IPC_RMID, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="type">int</span> msg_id = <span class="built_in">msgget</span>(<span class="built_in">ftok</span>(<span class="string">&quot;.&quot;</span>, <span class="number">3</span>), IPC_CREAT | <span class="number">0666</span>);</span><br><span class="line">		MSG msg;</span><br><span class="line">		<span class="built_in">memset</span>(&amp;msg, <span class="number">0</span>, <span class="built_in">sizeof</span>(msg));</span><br><span class="line">		msg.type = <span class="number">1</span>;</span><br><span class="line">		msg.data.id = <span class="number">6666</span>;</span><br><span class="line">		<span class="built_in">strcpy</span>(msg.data.name, <span class="string">&quot;Bingo&quot;</span>);</span><br><span class="line">		msg.data.age = <span class="number">18</span>;</span><br><span class="line">		<span class="built_in">strcpy</span>(msg.data.message, <span class="string">&quot;hello world!&quot;</span>);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;***%d name: %s age: %d msg: %s\n&quot;</span>,</span><br><span class="line">			msg.data.id, msg.data.name, msg.data.age, msg.data.message);</span><br><span class="line">		<span class="comment">//msgsnd 函数将消息发送到消息队列</span></span><br><span class="line">		<span class="built_in">msgsnd</span>(msg_id, &amp;msg, <span class="built_in">sizeof</span>(msg.data), <span class="number">0</span>);</span><br><span class="line">		<span class="built_in">sleep</span>(<span class="number">1</span>);</span><br><span class="line">		<span class="comment">//使用 msgctl 函数删除消息队列。</span></span><br><span class="line">		<span class="built_in">msgctl</span>(msg_id, IPC_RMID, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>待续。。。。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/01/12/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B02-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B8%80%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%A8%A1%E5%9E%8B/" rel="prev" title="Linux系统编程02-基础知识一客户端服务器端模型">
+      <i class="fa fa-chevron-left"></i> Linux系统编程02-基础知识一客户端服务器端模型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/12/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B04-%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="next" title="Linux系统编程04-线程与多线程">
+      Linux系统编程04-线程与多线程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+	
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%9A%E7%AE%A1%E9%81%93"><span class="nav-number">1.</span> <span class="nav-text">进程间通信：管道</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%9AFIFO"><span class="nav-number">2.</span> <span class="nav-text">进程间通信：FIFO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%9A%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-number">3.</span> <span class="nav-text">进程间通信：共享内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%9A%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">4.</span> <span class="nav-text">进程间通信：信号量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%9A%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="nav-number">5.</span> <span class="nav-text">进程间通信：消息队列</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="如河"
+      src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+  <p class="site-author-name" itemprop="name">如河</p>
+  <div class="site-description" itemprop="description">一起学习 超越情绪 变得更强</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bornleader10" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bornleader10" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:a1453323218@gmail.com" title="E-Mail → mailto:a1453323218@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">如河</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'Ov23lixF6IDch0xucZf1',
+      clientSecret: '6463f1bed40142e29a58bb43c577187d61ab9088',
+      repo        : 'project.github.io',
+      owner       : 'bornleader10',
+      admin       : ['bornleader10'],
+      id          : '0fa5fa1e4157e10be8b4319436416f9e',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

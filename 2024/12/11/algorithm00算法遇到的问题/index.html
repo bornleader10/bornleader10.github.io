@@ -28,9 +28,9 @@
 <meta property="og:description" content="算法中的语法问题">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-12-11T06:05:26.000Z">
-<meta property="article:modified_time" content="2024-12-16T13:05:07.628Z">
+<meta property="article:modified_time" content="2025-01-15T12:16:04.488Z">
 <meta property="article:author" content="如河">
-<meta property="article:tag" content="学习记录">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://bornleader10.github.io/2024/12/11/algorithm00%E7%AE%97%E6%B3%95%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">
@@ -132,12 +132,22 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">19</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-comment fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -243,7 +253,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-16 21:05:07" itemprop="dateModified" datetime="2024-12-16T21:05:07+08:00">2024-12-16</time>
+                <time title="修改时间：2025-01-15 20:16:04" itemprop="dateModified" datetime="2025-01-15T20:16:04+08:00">2025-01-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -284,7 +294,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="tag"># 学习记录</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
           </div>
 
         
@@ -313,6 +323,7 @@
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -374,14 +385,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -421,8 +432,8 @@
 
 <div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -485,6 +496,26 @@
   
 
   
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'Ov23lixF6IDch0xucZf1',
+      clientSecret: '6463f1bed40142e29a58bb43c577187d61ab9088',
+      repo        : 'project.github.io',
+      owner       : 'bornleader10',
+      admin       : ['bornleader10'],
+      id          : '50d3328db5ffe6348e7eed5536f6cef5',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>

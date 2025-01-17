@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bornleader10.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="网络编程重点内容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统编程01-基础知识">
+<meta property="og:url" content="https://bornleader10.github.io/2025/01/09/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B01-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="暮色回想">
+<meta property="og:description" content="网络编程重点内容">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-09T06:55:59.000Z">
+<meta property="article:modified_time" content="2025-01-15T12:18:01.780Z">
+<meta property="article:author" content="如河">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://bornleader10.github.io/2025/01/09/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B01-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux系统编程01-基础知识 | 暮色回想</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">暮色回想</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">超越情绪 变得更强</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-comment fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bornleader10.github.io/2025/01/09/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B01-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+      <meta itemprop="name" content="如河">
+      <meta itemprop="description" content="一起学习 超越情绪 变得更强">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="暮色回想">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux系统编程01-基础知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+			<span class="post-time">
+  &nbsp; |
+<span class="post-meta-item-icon">
+  <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">字数统计:</span>
+<span class="post-count">2.4k(字)</span>
+</span>
+
+<span class="post-time">
+  &nbsp; | 
+<span class="post-meta-item-icon">
+<i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">阅读时长≈</span>
+<span class="post-count">8(分)</span>
+&nbsp; | 
+</span>
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-09 14:55:59" itemprop="dateCreated datePublished" datetime="2025-01-09T14:55:59+08:00">2025-01-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-01-15 20:18:01" itemprop="dateModified" datetime="2025-01-15T20:18:01+08:00">2025-01-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">Linux系统编程</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">网络编程重点内容</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="一、套接字编程"><a href="#一、套接字编程" class="headerlink" title="一、套接字编程"></a>一、套接字编程</h3><p><strong>TCP服务端</strong></p>
+<p>1️⃣ 创建套接字socket()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> sockfd = <span class="built_in">socket</span>(PF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// PF_INET 指定协议族为 IPv4</span></span><br><span class="line"><span class="comment">// SOCK_STREAM：指定套接字类型为流套接字</span></span><br><span class="line"><span class="comment">// 0：指定协议类型，这里使用默认协议</span></span><br><span class="line"><span class="comment">// 如果socket函数成功创建套接字，会返回一个非负整数作为套接字描述符；如果失败，返回-1。</span></span><br></pre></td></tr></table></figure>
+
+<p>2️⃣ 存储地址信息</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个struct sockaddr_in类型的变量addr，用于存储地址信息。</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> addr;</span><br><span class="line"></span><br><span class="line"><span class="comment">//指定地址族为 IPv4，AF代表 “Address Family”，AF_INET和前面的PF_INET相对应。</span></span><br><span class="line">addr.sin_family = AF_INET; </span><br><span class="line"></span><br><span class="line"><span class="comment">// INADDR_ANY，表示该套接字将绑定到服务器上的所有网络接口。</span></span><br><span class="line">addr.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line"></span><br><span class="line"><span class="comment">// htons函数将主机字节序的端口号 9527 转换为网络字节序，并存储在sin_port字段中。</span></span><br><span class="line">addr.sin_port = <span class="built_in">htons</span>(<span class="number">9527</span>);</span><br></pre></td></tr></table></figure>
+
+<p>②分配套接字地址bind()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用bind函数将创建的套接字sock绑定到指定的地址和端口。</span></span><br><span class="line"><span class="built_in">bind</span>(sockfd, (<span class="keyword">struct</span> sockaddr*)&amp;addr, <span class="built_in">sizeof</span>(addr));</span><br><span class="line"><span class="comment">// 如果bind函数失败，返回-1。</span></span><br></pre></td></tr></table></figure>
+
+<p>③等待连接请求状态listen()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">listen</span>(sockfd, <span class="number">5</span>);  <span class="comment">// 5 是请求队列的最大长度</span></span><br></pre></td></tr></table></figure>
+
+<p>④允许连接accept()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> client_sock = <span class="built_in">accept</span>(sockfd, (<span class="keyword">struct</span> sockaddr*)&amp;client_addr, &amp;client_len);</span><br></pre></td></tr></table></figure>
+
+<p>⑤数据交换read()&#x2F;write()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> buffer[<span class="number">1024</span>];</span><br><span class="line"><span class="built_in">read</span>(client_sock, buffer, <span class="built_in">sizeof</span>(buffer));  <span class="comment">// 接收客户端的数据</span></span><br><span class="line"><span class="built_in">write</span>(client_sock, <span class="string">&quot;Hello, Client!&quot;</span>, <span class="number">15</span>);   <span class="comment">// 发送数据到客户端</span></span><br></pre></td></tr></table></figure>
+
+<p>⑥断开连接close()    关闭服务器套接字</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">close</span>(client_sock);</span><br><span class="line"><span class="built_in">close</span>(sockfd);</span><br></pre></td></tr></table></figure>
+
+<p><strong>客户端套接字编程流程</strong></p>
+<p>①创建套接字socket()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> sockfd = <span class="built_in">socket</span>(PF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>②设置服务器地址</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> server_addr;</span><br><span class="line">server_addr.sin_family = AF_INET;</span><br><span class="line">server_addr.sin_port = <span class="built_in">htons</span>(<span class="number">9527</span>);  <span class="comment">// 服务器端的端口号</span></span><br><span class="line">server_addr.sin_addr.s_addr = <span class="built_in">inet_addr</span>(<span class="string">&quot;192.168.0.1&quot;</span>);  <span class="comment">// 服务器的 IP 地址</span></span><br></pre></td></tr></table></figure>
+
+<p>③连接服务器（connect）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">connect</span>(sockfd, (<span class="keyword">struct</span> sockaddr*)&amp;server_addr, <span class="built_in">sizeof</span>(server_addr));</span><br></pre></td></tr></table></figure>
+
+<p>④数据交换read()&#x2F;write()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">write</span>(sockfd, <span class="string">&quot;Hello, Server!&quot;</span>, <span class="number">15</span>);  <span class="comment">// 向服务器发送数据</span></span><br><span class="line"><span class="built_in">read</span>(sockfd, buffer, <span class="built_in">sizeof</span>(buffer));  <span class="comment">// 从服务器读取数据</span></span><br></pre></td></tr></table></figure>
+
+<p>⑤断开连接close()    关闭服务器套接字</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">close</span>(sockfd);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<p><strong>客户端套接字地址信息在哪里</strong>？</p>
+<p>网络数据交换必须分配IP和端口。  调用connect函数时，在操作系统内核 IP使用计算机的IP，端口随机</p>
+<p>即 客户端IP地址和端口在调用connect函数时自动分配，无需调用标记的bind函数进行分配。</p>
+<p>客户端在listen之后  close之前connect才有效</p>
+<p><strong>迭代服务器</strong></p>
+<p>普通服务器TCP的缺点：启动一次服务程序，只能给一个客户端服务。迭代服务器比较原始，它的原型可以描述成：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">&#123;</span><br><span class="line">    new_fd = 服务器 accept客户端的连接(new_fd = <span class="built_in">accept</span>(listenfd,xx,xx));</span><br><span class="line">    <span class="comment">//逻辑处理</span></span><br><span class="line">    <span class="comment">// 在这个new_fd上给客户端发送消息</span></span><br><span class="line">    <span class="comment">// 关闭new_fd</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>基本工作流程</strong></p>
+<ol>
+<li><strong>等待连接</strong> ：服务器会一直监听一个端口，等待客户端的连接。</li>
+<li><strong>接受连接</strong> ：当客户端连接时，服务器会接受连接并建立一个新的套接字与客户端通信。</li>
+<li><strong>处理请求</strong> ：服务器会处理客户端的请求，执行一些操作，或者提供一些服务。</li>
+<li><strong>关闭连接</strong> ：处理完一个客户端的请求后，服务器关闭与该客户端的连接。</li>
+<li><strong>继续等待</strong> ：服务器回到监听状态，等待下一个客户端的连接请求。</li>
+</ol>
+<p><strong>write函数和read函数</strong></p>
+<p>①write函数   <code>ssize_t write(int fd, const void *buf, size_t count);</code></p>
+<p><code>write</code>函数用于向文件描述符<code>fd</code>所指向的文件、套接字或其他I&#x2F;O设备中写入数据。</p>
+<h3 id="TCP底层原理"><a href="#TCP底层原理" class="headerlink" title="TCP底层原理"></a>TCP底层原理</h3><p><code>write</code>函数调用后并非立即传输数据，read函数调用后也并非马上接收数据。<code>write</code>函数调用瞬间，数据将移至输出缓冲；<code>read</code>函数调用瞬间，从输入缓冲读取数据。</p>
+<p>A：I&#x2F;O缓冲在每个套接字中单独存在。</p>
+<p>B：I&#x2F;O缓冲在创建套接字时自动生成。</p>
+<p>C：即使关闭套接字也会<strong>继续传递输出缓冲中遗留的数据</strong>。</p>
+<p>D：关闭套接字将丢失输入缓冲中的数据。</p>
+<p>“客户端输入缓冲50字节，而服务器端传输了100字节。”</p>
+<p>填满输入缓冲前迅速调用read函数读取数据，就能腾出一部分空间，问题就解决了。</p>
+<p>其实不会发生这类问题，因为TCP会控制数据流。TCP有滑动窗口协议。</p>
+<p><strong>数据收发也是如此，因此TCP中不会因为缓冲溢出而丢失数据。</strong></p>
+<p><strong>但是会因为缓冲而影响传输效率。</strong></p>
+<h4 id="TCP内部原理"><a href="#TCP内部原理" class="headerlink" title="TCP内部原理"></a>TCP内部原理</h4><p><strong>TCP通信的三大步骤</strong></p>
+<ol>
+<li>三次握手建立连接；</li>
+<li>开始通信，进行数据交换；</li>
+<li>四次挥手断开连接；</li>
+</ol>
+<p>利用TCP三次握手进行攻击。</p>
+<p>断开连接有可能卡在中间两次发数据包的地方。</p>
+<h3 id="UDP编程"><a href="#UDP编程" class="headerlink" title="UDP编程"></a>UDP编程</h3><h4 id="UDP基本原理"><a href="#UDP基本原理" class="headerlink" title="UDP基本原理"></a>UDP基本原理</h4><p>4层TCP&#x2F;IP模型中，第二层传输层分为TCP和UDP。</p>
+<p>只考虑可靠性，TCP比UDP更好。但UDP在结构上比TCP更简洁。UDP不会发送类似ACK的应答消息，也不会想SEQ那样给数据包分配序号。因此UDP的性能有时比TCP高出很多。</p>
+<p>为了提供可靠的数据传输服务，TCP在不可靠的IP层进行流控制，而UDP就缺少这种流控制机制。</p>
+<p>TCP的速度无法超过UDP，但在收发某些类型的数据时有可能接近UDP。例如，每次交换的数据量越大，TCP的传输速率越接近UDP的传输速率。</p>
+<p><strong>TCP比UDP慢的原因</strong></p>
+<p>① 收发数据前后进行的连接设置及清除过程。</p>
+<p>② 收发数据过程中为保证可靠性而添加的流控制。</p>
+<p><strong>UDP 服务端</strong></p>
+<p>UDP   服务器&#x2F;客户端不像TCP那样在连接状态下交换数据，因此与TCP不同，无需经过连接过程。也就是说，不必调用TCP连接过程中调用的listen函数和accept函数。UDP中只有<strong>创建套接字的过程和数据交换的过程</strong>。</p>
+<p>UDP的服务端和客户端都只需要一个套接字，而TCP中，套接字之间是一一对应的关系。若要向10个客户端提供服务，则除了守门的服务器套接字外，还需要10个服务器端套接字。</p>
+<p>UDP套接字绑定本地的IP地址和端口号，这个套接字就可以接受来自任何主机发送到该端口的数据报。</p>
+<p>创建好TCP套接字后，传输数据时无需再添加地址信息。但是UDP套接字不会保持连接状态（UDP套接字只有简单的邮筒功能），因此每次传输数据都要添加目标地址信息。这相当于寄信前在信件中填写地址。填写地址并传输数据时调用的UDP相关函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">ssize_t</span> <span class="title">sendto</span><span class="params">(<span class="type">int</span> sock,<span class="type">void</span>*buff,<span class="type">size_t</span> nbytes,<span class="type">int</span> flags,<span class="keyword">struct</span> sockaddr *to, <span class="type">socklen_t</span> addrlen)</span></span>;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">sock     用于传输数据的UDP套接字文件描述符。</span></span><br><span class="line"><span class="comment">buff     保存待传输数据的缓冲地址值。</span></span><br><span class="line"><span class="comment">nbytes   待传输的数据长度，以字节为单位。</span></span><br><span class="line"><span class="comment">flags    可选项参数，若没有则传递0。</span></span><br><span class="line"><span class="comment">to       存有目标地址信息的sockaddr结构体变量的地址值</span></span><br><span class="line"><span class="comment">addrlen  传递给参数to的地址值结构体变量长度。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">上述函数与之前的TCP输出函数最大的区别在于，此函数需要向它传递目标地址信息。接下来介绍接收UDP数据的函数。UDP数据的发送端并不固定，因此该函数定义为可接收发送端信息的形式，也就是将同时返回UDP数据包中的发送端信息。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">ssize_t</span> <span class="title">recvfrom</span><span class="params">(<span class="type">int</span> sock,  <span class="type">void</span> *buff,<span class="type">size_t</span> nbytes,  <span class="type">int</span> flags,</span></span></span><br><span class="line"><span class="params"><span class="function">                 <span class="keyword">struct</span> sockaddr*from,   <span class="type">socklen_t</span>*addrlen)</span></span>;</span><br><span class="line"><span class="comment">// →成功时返回接收的字节数，失败时返回-1。</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">sock用于接收数据的UDP套接字文件描述符。</span></span><br><span class="line"><span class="comment">buff保存接收数据的缓存地址值</span></span><br><span class="line"><span class="comment">nbytes 可接收的最大字节数，故无法超过参数buf所指的缓冲大小。</span></span><br><span class="line"><span class="comment">flags可选项参数，若没有则传入0。</span></span><br><span class="line"><span class="comment">from存有发送端地址信息的sockaddr结构体变量的地址值。</span></span><br><span class="line"><span class="comment">addrlen 保存参数from的结构体变量长度的变量地址值。</span></span><br><span class="line"><span class="comment">编写UDP程序时最核心的部分就在于上述两个函数，这也说明二者在UDP数据传输中的地位。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>UDP相关的函数</p>
+<p>DDos攻击大多利用UDP</p>
+<p><strong>发生地址分配错误</strong>（重点）</p>
+<p>客户端是connect，所以不会出现bind  failed，因为有几万个端口可以用，所以connect失败很难</p>
+<p><strong>I&#x2F;O缓冲区大小</strong></p>
+<p><strong>TCP_NODELAY</strong></p>
+<p>监控键盘的输入</p>
+<h3 id="Linux系统编程：进程"><a href="#Linux系统编程：进程" class="headerlink" title="Linux系统编程：进程"></a>Linux系统编程：进程</h3><h4 id="并发服务器的实现方法"><a href="#并发服务器的实现方法" class="headerlink" title="并发服务器的实现方法"></a>并发服务器的实现方法</h4><p>使其同时相所有发起请求的客户端提供服务，以提高平均满意度。</p>
+<p>而且，<strong>网络程序中数据通信时间比CPU运算时间占比更大，因此，向多个客户端提供服务是一种有效利用CPU的方式。</strong></p>
+<ol>
+<li>多进程服务器：通过创建多个进程提供服务。</li>
+<li>多路复用服务器：通过捆绑并统一管理I&#x2F;O对象提供服务。</li>
+<li>多线程服务器：通过生成与客户端等量的线程提供服务。</li>
+</ol>
+<p><strong>进程</strong>：占用内存空间正在运行的程序 就是进程</p>
+<p>从操作系统的角度来看，<strong>进程是程序流的基本单位</strong>，若创建多个进程，则操作系统将同时运行。有时候一个程序运行过程中也会产生多个进程。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/12/11/Computer_composition_principles02/" rel="prev" title="Computer_composition_principles02">
+      <i class="fa fa-chevron-left"></i> Computer_composition_principles02
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/12/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B02-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B8%80%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%A8%A1%E5%9E%8B/" rel="next" title="Linux系统编程02-基础知识一客户端服务器端模型">
+      Linux系统编程02-基础知识一客户端服务器端模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+	
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">一、套接字编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">TCP底层原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">TCP内部原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP%E7%BC%96%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">UDP编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">UDP基本原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%EF%BC%9A%E8%BF%9B%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">Linux系统编程：进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">并发服务器的实现方法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="如河"
+      src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg">
+  <p class="site-author-name" itemprop="name">如河</p>
+  <div class="site-description" itemprop="description">一起学习 超越情绪 变得更强</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bornleader10" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bornleader10" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:a1453323218@gmail.com" title="E-Mail → mailto:a1453323218@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">如河</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'Ov23lixF6IDch0xucZf1',
+      clientSecret: '6463f1bed40142e29a58bb43c577187d61ab9088',
+      repo        : 'project.github.io',
+      owner       : 'bornleader10',
+      admin       : ['bornleader10'],
+      id          : '5fdd078ff95c15f695c0bc40166635fa',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
