@@ -27,11 +27,15 @@
 <meta property="og:site_name" content="wyp笔记站">
 <meta property="og:description" content="TCP 客户端 - 服务器模型">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bu.dusays.com/2025/03/05/67c7e28519e2f.png">
+<meta property="og:image" content="https://bu.dusays.com/2025/03/05/67c7e2b6a33fb.png">
+<meta property="og:image" content="https://bu.dusays.com/2025/03/05/67c7e5e01f1b4.png">
 <meta property="article:published_time" content="2025-01-12T06:30:02.000Z">
-<meta property="article:modified_time" content="2025-03-04T11:53:50.864Z">
+<meta property="article:modified_time" content="2025-03-05T06:03:03.564Z">
 <meta property="article:author" content="wyp">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bu.dusays.com/2025/03/05/67c7e28519e2f.png">
 
 <link rel="canonical" href="https://bornleader10.github.io/2025/01/12/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B02-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B8%80%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%A8%A1%E5%9E%8B/">
 
@@ -127,17 +131,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">4</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">29</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">27</span></a>
 
   </li>
         <li class="menu-item menu-item-guestbook">
@@ -224,7 +228,7 @@
   <i class="fa fa-calendar-o"></i>
 </span>
 <span class="post-meta-item-text">字数统计:</span>
-<span class="post-count">4.7k(字)</span>
+<span class="post-count">5.3k(字)</span>
 </span>
 
 <span class="post-time">
@@ -233,7 +237,7 @@
 <i class="fa fa-calendar-o"></i>
 </span>
 <span class="post-meta-item-text">阅读时长≈</span>
-<span class="post-count">20(分)</span>
+<span class="post-count">22(分)</span>
 &nbsp; | 
 </span>
               <span class="post-meta-item-icon">
@@ -248,7 +252,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-04 19:53:50" itemprop="dateModified" datetime="2025-03-04T19:53:50+08:00">2025-03-04</time>
+                <time title="修改时间：2025-03-05 14:03:03" itemprop="dateModified" datetime="2025-03-05T14:03:03+08:00">2025-03-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -292,18 +296,18 @@
 
 <h4 id="lession63-函数"><a href="#lession63-函数" class="headerlink" title="lession63()函数"></a><code>lession63()</code>函数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">lession63</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 创建子进程</span></span><br><span class="line">    <span class="type">pid_t</span> pid = fork();</span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 子进程，作为客户端运行</span></span><br><span class="line">        <span class="built_in">sleep</span>(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 运行客户端函数两次</span></span><br><span class="line">        <span class="built_in">run_client</span>();</span><br><span class="line">        <span class="built_in">run_client</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (pid &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 父进程，作为服务器端运行</span></span><br><span class="line">        <span class="built_in">lession63_</span>();</span><br><span class="line">        <span class="type">int</span> status = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 等待子进程结束</span></span><br><span class="line">        <span class="built_in">wait</span>(&amp;status);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 输出fork失败信息</span></span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;fork failed!&quot;</span> &lt;&lt; pid &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><strong>客户端的流程</strong></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><strong>TCP连接客户端的流程</strong></p>
 <p>1️⃣创建套接字</p>
 <p>2️⃣初始化服务器地址</p>
 <p>3️⃣连接服务器。connect 成功返回0，失败返回-1</p>
 <p>4️⃣通信   write read</p>
 <p>5️⃣关闭套接字 （close关闭）</p>
-<p><strong>服务器的流程</strong></p>
+<p><strong>TCP连接服务器的流程</strong></p>
 <p>1️⃣创建套接字</p>
 <p>2️⃣初始化服务器地址</p>
 <p>3️⃣绑定套接字，<code>bind</code> 函数将服务器套接字 <code>server</code> 绑定到指定的地址和端口。</p>
 <p>4️⃣监听连接，<code>listen</code>函数使得服务器套接字开始监听传入的连接请求</p>
-<p>5️⃣接受并处理客户端连接，返回一个新的套接字描述符用于与客户端通信。   read、write 处理完客户端请求后，使用 <code>close</code> 函数关闭与客户端的连接。</p>
+<p>5️⃣<code>accept</code>接受并处理客户端连接，返回一个新的套接字描述符用于与客户端通信。   <code>read</code>、<code>write</code> 进行通信。</p>
 <p>6️⃣关闭服务器套接字，<code>close(server)</code></p>
 <h4 id="回声服务器"><a href="#回声服务器" class="headerlink" title="回声服务器"></a>回声服务器</h4><p><strong>回声服务器</strong>：将从客户端收到的数据原样返回给客户端，即“回声”。</p>
 <p>客户端部分 分为 发送  和 接受两部分</p>
@@ -362,30 +366,39 @@
 <h4 id="client-函数"><a href="#client-函数" class="headerlink" title="client()函数"></a><code>client()</code>函数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">client</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 变量声明</span></span><br><span class="line">	<span class="type">int</span> client_sock;</span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> serv_addr;</span><br><span class="line">	<span class="type">socklen_t</span> serv_len = <span class="built_in">sizeof</span>(serv_addr);</span><br><span class="line">	<span class="type">char</span> message[<span class="number">512</span>] = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (argc != <span class="number">3</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;usage:%s is port\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">		<span class="built_in">handle_error</span>(<span class="string">&quot;argement error:&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 创建 UDP 套接字</span></span><br><span class="line">    <span class="comment">// UDP 套接字是无连接的，通过SOCK_DGRAM参数来指定创建 UDP 类型的套接字。</span></span><br><span class="line">	client_sock = <span class="built_in">socket</span>(PF_INET, SOCK_DGRAM, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span> (client_sock == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">handle_error</span>(<span class="string">&quot;socket create failed！&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">memset</span>(&amp;serv_addr, <span class="number">0</span>, <span class="built_in">sizeof</span>(serv_addr));</span><br><span class="line">    <span class="comment">// 初始化服务器地址</span></span><br><span class="line">	serv_addr.sin_family = AF_INET;</span><br><span class="line">	serv_addr.sin_addr.s_addr = <span class="built_in">inet_addr</span>(argv[<span class="number">1</span>]);</span><br><span class="line">	serv_addr.sin_port = <span class="built_in">htons</span>((<span class="type">short</span>)<span class="built_in">atoi</span>(argv[<span class="number">2</span>]));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 消息处理循环</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Input message(q to quit):&quot;</span>);</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, message);</span><br><span class="line">		<span class="keyword">if</span> ((<span class="built_in">strcmp</span>(message, <span class="string">&quot;q&quot;</span>) == <span class="number">0</span>) || (<span class="built_in">strcmp</span>(message, <span class="string">&quot;Q&quot;</span>) == <span class="number">0</span>)) &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 分配了地址</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__);</span><br><span class="line">		<span class="type">ssize_t</span> len = <span class="built_in">sendto</span>(client_sock, message, <span class="built_in">strlen</span>(message), <span class="number">0</span>, (sockaddr*)&amp;serv_addr, serv_len);</span><br><span class="line">		<span class="built_in">memset</span>(message, <span class="number">0</span>, len);</span><br><span class="line">		<span class="built_in">recvfrom</span>(client_sock, message, <span class="built_in">sizeof</span>(message), <span class="number">0</span>, (sockaddr*)&amp;serv_addr, &amp;serv_len);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;recv:%s\n&quot;</span>, message);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 关闭套接字并返回</span></span><br><span class="line">	<span class="built_in">close</span>(client_sock);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p><strong><code>UDP</code>客户端的流程</strong></p>
-<p>1️⃣创建套接字</p>
-<p>2️⃣设置服务器地址端口</p>
-<p>3️⃣使用<code>sendto</code>函数发送数据、<code>recvfrom</code>函数来接收数据。</p>
-<p>4️⃣关闭套接字</p>
+<p>1️⃣ 创建套接字</p>
+<p>2️⃣ 设置服务器地址端口</p>
+<p>3️⃣ 使用<code>sendto</code>函数发送数据、<code>recvfrom</code>函数来接收数据。</p>
+<p>4️⃣ 关闭套接字</p>
 <p><strong><code>UDP</code>服务器端的流程</strong></p>
-<p>1️⃣创建套接字</p>
-<p>2️⃣绑定地址和端口</p>
-<p>3️⃣接受、处理数据</p>
+<p>1️⃣ 创建套接字</p>
+<p>2️⃣ 绑定地址和端口</p>
+<p>3️⃣ 接受、处理数据</p>
 <p>4️⃣ 关闭套接字</p>
 <h4 id="问题汇总-1"><a href="#问题汇总-1" class="headerlink" title="问题汇总"></a>问题汇总</h4><p><code>UDP</code>服务器端&#x2F;客户端的实现方法。但如果仔细观察<code>UDP</code>客户端会发现，它缺少把<code>IP</code>和端口分配给套接字的过程。</p>
 <p><code>TCP</code>客户端调用connect函数自动完成此过程，<code>UDP</code>调用<code>sendto</code>函数时自动分配<code>IP</code>和端口号</p>
-<p>​    </p>
 <p><strong>套接字类型只能在创建时决定，以后不能再更改。</strong></p>
 <p><strong><code>SO_SNDBUF &amp;SO_RCVBUF</code></strong></p>
 <p><code>SO_RCVBUF</code>是输入缓冲大小相关可选项，<code>SO_SNDBUF</code>是输出缓冲大小相关可选项。用这2 个可选项既可以读取当前I&#x2F;O缓冲大小，也可以进行更改。通过下列示例读取创建套接字时默认的I&#x2F;O缓冲大小。</p>
 <p><strong>如何使用<code>socket</code>、<code>getsockopt</code>和<code>setsockopt</code>函数来获取和设置套接字的属性</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">lession76</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 声明了两个整数变量，分别用于存储 TCP 套接字描述符和 UDP 套接字描述符。</span></span><br><span class="line">	<span class="type">int</span> tcp_sock, udp_sock;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 声明并初始化一个整数变量optval，用于存储套接字选项的值。</span></span><br><span class="line">	<span class="type">int</span> optval = <span class="number">0</span>;</span><br><span class="line">	<span class="type">socklen_t</span> len = <span class="built_in">sizeof</span>(optval);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分别创建TCP/UDP 套接字</span></span><br><span class="line">	tcp_sock = <span class="built_in">socket</span>(PF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">	udp_sock = <span class="built_in">socket</span>(PF_INET, SOCK_DGRAM, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;SOCK_STREAM:%d\n&quot;</span>, SOCK_STREAM);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;SOCK_DGRAM:%d\n&quot;</span>, SOCK_DGRAM);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取套接字类型</span></span><br><span class="line">    <span class="comment">// 使用getsockopt函数获取 TCP 套接字的类型。</span></span><br><span class="line">    <span class="comment">// SOL_SOCKET表示通用套接字选项级别，SO_TYPE表示要获取的选项是套接字类型。</span></span><br><span class="line">    <span class="comment">// 获取到的值存储在optval中。</span></span><br><span class="line">	<span class="built_in">getsockopt</span>(tcp_sock, SOL_SOCKET, SO_TYPE, (<span class="type">void</span>*)&amp;optval, &amp;len);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;tcp_sock type is :%d\n&quot;</span>, optval);</span><br><span class="line">	optval = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">getsockopt</span>(udp_sock, SOL_SOCKET, SO_TYPE, (<span class="type">void</span>*)&amp;optval, &amp;len);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;udp_sock type is :%d\n&quot;</span>, optval);</span><br><span class="line">	optval = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 获取和设置 TCP 套接字发送缓冲区大小</span></span><br><span class="line">	<span class="built_in">getsockopt</span>(tcp_sock, SOL_SOCKET, SO_SNDBUF, (<span class="type">void</span>*)&amp;optval, &amp;len);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;tcp_sock send buffer size is :%d\n&quot;</span>, optval);</span><br><span class="line">	optval = <span class="number">1024</span> * <span class="number">16</span>;</span><br><span class="line">	<span class="built_in">setsockopt</span>(tcp_sock, SOL_SOCKET, SO_SNDBUF, (<span class="type">void</span>*)&amp;optval, len);</span><br><span class="line">	<span class="built_in">getsockopt</span>(tcp_sock, SOL_SOCKET, SO_SNDBUF, (<span class="type">void</span>*)&amp;optval, &amp;len);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;*tcp_sock send buffer size is :%d\n&quot;</span>, optval);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 关闭套接字</span></span><br><span class="line">	<span class="built_in">close</span>(tcp_sock);</span><br><span class="line">	<span class="built_in">close</span>(udp_sock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><strong>僵尸进程</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">lession82</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">pid_t</span> pid = fork();</span><br><span class="line">	<span class="keyword">if</span> (pid &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">        <span class="comment">// 父进程睡眠30秒  给子进程足够的时间来执行。</span></span><br><span class="line">		<span class="built_in">sleep</span>(<span class="number">30</span>);</span><br><span class="line">		<span class="type">int</span> status;</span><br><span class="line">		<span class="built_in">waitpid</span>(pid, &amp;status, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s(%d):%s\n&quot;</span>, __FILE__, __LINE__, __FUNCTION__);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>信号处理函数</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">signal_func</span><span class="params">(<span class="type">int</span> sig)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (sig)</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="keyword">case</span> SIGALRM:  <span class="comment">// 闹钟信号</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;tid %d pid %d\n&quot;</span>, <span class="built_in">pthread_self</span>(), <span class="built_in">getpid</span>());</span><br><span class="line">        <span class="built_in">alarm</span>(<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> SIGINT:   <span class="comment">// 通常由用户按下 Ctrl + C 产生</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Ctrl + C press...&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">lession83</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 打印当前的线程id和  进程id</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;=====tid %d pid %d\n&quot;</span>, <span class="built_in">pthread_self</span>(), <span class="built_in">getpid</span>());</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 把signal_func函数分别注册为SIGALRM信号、SIGINT信号的处理函数</span></span><br><span class="line">    <span class="built_in">signal</span>(SIGALRM, signal_func);</span><br><span class="line">    <span class="built_in">signal</span>(SIGINT, signal_func);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 使用 alarm(1) 设置一个 1 秒的闹钟，1 秒后会触发 SIGALRM 信号。</span></span><br><span class="line">    <span class="built_in">alarm</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="built_in">sleep</span>(<span class="number">3</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;=====tid %d pid %d\n&quot;</span>, <span class="built_in">pthread_self</span>(), <span class="built_in">getpid</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<p><strong>套接字的多种可选项</strong></p>
+<p>在客户端控制台输入Q消息，或通过CTRL+C终止程序。</p>
+<p>​	在客户端输入Q消息调用close函数，向服务器端发送FIN消息并经过四次挥手的过程。</p>
+<p><font color="#FF0000">服务器端和客户端已建立连接的状态下，</font>向服务器端控制台输入CTRL+C，即强制关闭服务器端。</p>
+<p>​	如果是CTRL+C，服务器端重新运行的时候将产生问题。如果用同一端口号重新运行服务器端，将输出“bind error” 消息，并且无法再次运行。这种情况下，大约三分钟后即可重新运行服务器端。</p>
+<p><img src="https://bu.dusays.com/2025/03/05/67c7e28519e2f.png"></p>
+<p>上述两种方法唯一的区别就是谁先传输FIN消息。</p>
+<p><img src="https://bu.dusays.com/2025/03/05/67c7e2b6a33fb.png"></p>
+<p>​	假设上图中主机A是服务器端，因为是主机A向B发送FIN消息，故可以想象成服务器端1在控制台输入CTRL+C。但问题是，套接字经过四次挥手过程后并非立即消除，而是要经过一段时间的Time-wait状态。当然，只有先断开连接的（先发送FIN消息的）主机才经过Time-wait状态。因此，若服务器端先断开连接，则无法立即重新运行。套接字处在Time-wait过程时，相应端口是正在使用的状态。因此，就像之前验证过的，bind函数调用过程中当然会发生错误。</p>
+<p>​	不论是服务器端还是客户端都会有Time-wait过程。先断开连接的套接字必然会经过Time-wait过程。但是无需考虑客户端Time-wait状态。因为客户端套接字的端口号是任意指定的。</p>
+<p><strong><font color="#FF0000">为什么会有Time-wait状态？</font></strong></p>
+<p>​	如上图中假设主机A向主机B传输ACK消息（SEQ5001、ACK7502）后立即消除套接字。但最后这条ACK消息在传递途中丢失，未能传给主机B。这时会发生什么?主机B会认为之前自己发送的FIN消息（SEQ 7501、ACK 5001）未能抵达主机A，继而试图重传。但此时主机A已是完全终止的状态，因此主机B永远无法收到从主机A最后传来的ACK消息。相反，<strong>若主机A的套接字处在Time-wait状态</strong>，则会向主机B重传最后的ACK消息，主机B也可以正常终止。基于这些考虑，先传输FIN消息的主机应经过Time-wait过程。</p>
+<p><strong>地址再分配</strong></p>
+<p><img src="https://bu.dusays.com/2025/03/05/67c7e5e01f1b4.png"></p>
+<p>​	如上图所示，在主机A的四次握手过程中，如果最后的数据丢失，则主机B会认为主机A未能收到自己发送的FIN消息，因此重传。这时，收到FIN消息的主机A将重启Time-wait计时器。因此，如果网络状况不理想，Time-wait状态将持续。</p>
+<p>​	解决方案就是在套接字的可选项中更改SO_REUSEADDR的状态。适当调整该参数，可将Time-wait状态下的套接字端口号重新分配给新的套接字。SO_REUSEADDR的默认值为0（假），这就意味着无法分配Time-wait状态下的套接字端口号。因此需要将这个值改成1（真）。</p>
 
     </div>
 
@@ -487,20 +500,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

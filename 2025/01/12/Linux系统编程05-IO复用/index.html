@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://bu.dusays.com/2025/01/13/67847ba4af4fe.png">
 <meta property="article:published_time" content="2025-01-12T13:37:08.000Z">
-<meta property="article:modified_time" content="2025-02-14T02:39:57.462Z">
+<meta property="article:modified_time" content="2025-03-05T02:16:42.626Z">
 <meta property="article:author" content="wyp">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
@@ -129,17 +129,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">4</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">29</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">27</span></a>
 
   </li>
         <li class="menu-item menu-item-guestbook">
@@ -226,7 +226,7 @@
   <i class="fa fa-calendar-o"></i>
 </span>
 <span class="post-meta-item-text">字数统计:</span>
-<span class="post-count">1.4k(字)</span>
+<span class="post-count">2.7k(字)</span>
 </span>
 
 <span class="post-time">
@@ -235,7 +235,7 @@
 <i class="fa fa-calendar-o"></i>
 </span>
 <span class="post-meta-item-text">阅读时长≈</span>
-<span class="post-count">4(分)</span>
+<span class="post-count">9(分)</span>
 &nbsp; | 
 </span>
               <span class="post-meta-item-icon">
@@ -250,7 +250,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-14 10:39:57" itemprop="dateModified" datetime="2025-02-14T10:39:57+08:00">2025-02-14</time>
+                <time title="修改时间：2025-03-05 10:16:42" itemprop="dateModified" datetime="2025-03-05T10:16:42+08:00">2025-03-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -288,7 +288,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="select模型以及实战案例"><a href="#select模型以及实战案例" class="headerlink" title="select模型以及实战案例"></a>select模型以及实战案例</h3><p><strong>复用的概念：为了提高物理设备的效率，用最少的物理要素传递 ，最少数据时使用的技术</strong></p>
+        <h3 id="Linux系统调用accept原理"><a href="#Linux系统调用accept原理" class="headerlink" title="Linux系统调用accept原理"></a>Linux系统调用accept原理</h3><p>​	<code>accept</code> 函数是网络编程中用于接受客户端连接请求的关键系统调用。当一个 socket 被设置为监听模式后，它会在其对应的队列中积累来自客户端的连接请求。<code>accept</code> 函数的作用是从这个队列中取出一个已经建立的连接，并返回一个新的 socket 文件描述符，该描述符与客户端的连接相关联。</p>
+<p>​	当没有连接请求时，<code>accept</code> 会阻塞调用它的进程或线程，直到有新的连接请求到达。这个过程涉及到操作系统内核中的网络协议栈，具体来说，是 TCP 协议栈的处理机制。当 <code>accept</code> 被调用时，内核会检查监听 socket 的完全连接队列，如果队列为空，则进程或线程进入阻塞状态；如果队列中有待处理的连接，则 <code>accept</code> 返回一个新的 socket，进程或线程继续执行。</p>
+<h3 id="非阻塞IO模式"><a href="#非阻塞IO模式" class="headerlink" title="非阻塞IO模式"></a>非阻塞IO模式</h3><p>在非阻塞 I&#x2F;O 模式下，当 <code>accept</code> 函数没有准备好返回时（即没有连接请求可以接受），它不会阻塞调用它的进程或线程，而是立即返回一个错误。这种模式允许程序在等待连接时继续执行其他任务，从而提高程序的响应性和效率。</p>
+<h3 id="设置socket为非阻塞模式"><a href="#设置socket为非阻塞模式" class="headerlink" title="设置socket为非阻塞模式"></a>设置socket为非阻塞模式</h3><p>要将 socket 设置为非阻塞模式，可以使用 <code>fcntl</code> 函数来修改 socket 的属性。</p>
+<h3 id="IO复用的概念"><a href="#IO复用的概念" class="headerlink" title="IO复用的概念"></a>IO复用的概念</h3><p>在网络编程中，IO 复用（I&#x2F;O Multiplexing）是一种让程序可以同时监视多个文件描述符（在网络编程里通常是套接字描述符）的技术，以此来判断这些文件描述符上是否有读写等事件发生，从而实现高效的 I&#x2F;O 操作。</p>
+<p><strong>一个应用场景</strong>：在传统的单线程网络编程中，当调用 <code>accept</code> 函数时，如果没有新的连接请求到达，程序会被阻塞，这意味着在等待新连接的过程中，程序无法处理其他已经建立的连接上的读写操作。</p>
+<h3 id="理解select函数并实现服务端："><a href="#理解select函数并实现服务端：" class="headerlink" title="理解select函数并实现服务端："></a>理解select函数并实现服务端：</h3><p><strong>1、是否存在套接字接收数据？</strong></p>
+<p>​	要判断是否存在套接字接收数据，可以使用 IO 复用技术（如 <code>select</code>、<code>poll</code>、<code>epoll</code>）。这些技术允许程序同时监视多个套接字的状态，当某个套接字有数据可读时，就能得知该套接字正在接收数据。</p>
+<p><strong>2、无需阻塞传输数据的套接字有哪些？</strong></p>
+<p>​	在网络编程中，实现非阻塞传输数据通常可以通过将套接字设置为非阻塞模式，或者使用异步 I&#x2F;O 技术。</p>
+<p><strong>3、哪些套接字发生了异常？</strong></p>
+<p>​	同样可以使用 IO 复用技术来检测套接字是否发生异常。在 <code>select</code>、<code>poll</code>、<code>epoll</code> 等函数中，都有相应的机制来处理异常事件。</p>
+<h3 id="select模型以及实战案例"><a href="#select模型以及实战案例" class="headerlink" title="select模型以及实战案例"></a>select模型以及实战案例</h3><p>最早出现的IO复用系统调用，几乎所有的操作系统都支持。</p>
+<p>程序创建一个文件描述符集合，将需要监视的文件描述符添加到该集合中，然后调用 <code>select</code> 函数。<code>select</code> 函数会阻塞，直到有文件描述符发生指定的事件或超时。返回时，<code>select</code> 会修改文件描述符集合，只保留那些发生了事件的文件描述符，程序可以通过遍历集合来处理这些事件。</p>
 <p><strong>多进程服务器的缺点和解决办法</strong></p>
 <p>多进程服务器：1、需要大量的运算        2、大量的内存空间</p>
 <p><strong>理解select函数并实现服务端</strong></p>
@@ -296,8 +309,12 @@
 <p>2、无需阻塞传输数据的套接字有哪些？</p>
 <p>3、哪些套接字发生了异常？</p>
 <p><strong>Select模型具体步骤</strong></p>
+<p>1、设置文件描述符：select函数监视多个（不超过1024个）文件描述符</p>
 <p><img src="https://bu.dusays.com/2025/01/13/67847ba4af4fe.png"></p>
-<h3 id="EPOLL-模型"><a href="#EPOLL-模型" class="headerlink" title="EPOLL 模型"></a><code>EPOLL</code> 模型</h3><p><code>**Epoll</code>的三大函数：<code>epoll_create</code>，<code>epoll_wait</code>， <code>epoll_ct</code>**</p>
+<h3 id="EPOLL-模型"><a href="#EPOLL-模型" class="headerlink" title="EPOLL 模型"></a><code>EPOLL</code> 模型</h3><p><code>eventpoll</code>是 linux 内核实现IO多路转接&#x2F;复用（IO multiplexing）的一个实现。IO多路转接的意思是在一个操作里同时监听多个输入输出源，在其中一个或多个输入输出源可用的时候返回，然后对其的进行读写操作。epoll是select和poll的升级版，相较于这两个前辈，epoll改进了工作方式，因此它更加高效。</p>
+<p>·对于待检测集合select和poll是基于线性方式处理的，epoll是基于红黑树来管理待检测集合的。</p>
+<p>select和poll每次都会线性扫描整个待检测集合，集合越大速度越慢，epoll使用的是回调机制，效率高，处理效率也不会随着检测集合的变大而下降<br>select和poll工作过程中存在内核&#x2F;用户空间数据的频繁拷贝问题，在epoll中内核和用户区使用的是共享内存（基于mmap内存映射区实现），省去了不必要的内存拷贝。<br>程序猿需要对select和poll返回的集合进行判断才能知道哪些文件描述符是就绪的，通过epoll可以直接得到已就绪的文件描述符集合，无需再次检测<br>使用epoll没有最大文件描述符的限制，仅受系统中进程能打开的最大文件数目限制<br>当多路复用的文件数量庞大、IO流量频繁的时候，一般不太适合使用select()和poll()，这种情况下select()和poll()表现较差，推荐使用epoll()。</p>
+<p><code>**Epoll</code>的三大函数：<code>epoll_create</code>，<code>epoll_wait</code>， <code>epoll_ct</code>**</p>
 <p><strong>int <code>epoll_create</code>(int size);</strong>    size必须要大于0      这个函数返回文件描述符</p>
 <p> <strong><code>epoll_ctl</code></strong></p>
 <h3 id="EPOOL-模型和-select-模型的对比"><a href="#EPOOL-模型和-select-模型的对比" class="headerlink" title="EPOOL 模型和 select 模型的对比"></a><code>EPOOL</code> 模型和 <code>select</code> 模型的对比</h3><ol>
@@ -423,7 +440,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#select%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%8A%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">select模型以及实战案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EPOLL-%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">EPOLL 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EPOOL-%E6%A8%A1%E5%9E%8B%E5%92%8C-select-%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">3.</span> <span class="nav-text">EPOOL 模型和 select 模型的对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%B9%E7%BC%98%E8%A7%A6%E5%8F%91%E5%92%8C%E6%9D%A1%E4%BB%B6%E8%A7%A6%E5%8F%91"><span class="nav-number">4.</span> <span class="nav-text">边缘触发和条件触发</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8accept%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">Linux系统调用accept原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E9%98%BB%E5%A1%9EIO%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">非阻塞IO模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEsocket%E4%B8%BA%E9%9D%9E%E9%98%BB%E5%A1%9E%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">设置socket为非阻塞模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO%E5%A4%8D%E7%94%A8%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">4.</span> <span class="nav-text">IO复用的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%A7%A3select%E5%87%BD%E6%95%B0%E5%B9%B6%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E7%AB%AF%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">理解select函数并实现服务端：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select%E6%A8%A1%E5%9E%8B%E4%BB%A5%E5%8F%8A%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B"><span class="nav-number">6.</span> <span class="nav-text">select模型以及实战案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EPOLL-%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.</span> <span class="nav-text">EPOLL 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EPOOL-%E6%A8%A1%E5%9E%8B%E5%92%8C-select-%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">8.</span> <span class="nav-text">EPOOL 模型和 select 模型的对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%B9%E7%BC%98%E8%A7%A6%E5%8F%91%E5%92%8C%E6%9D%A1%E4%BB%B6%E8%A7%A6%E5%8F%91"><span class="nav-number">9.</span> <span class="nav-text">边缘触发和条件触发</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -439,20 +456,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
